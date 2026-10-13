@@ -38,6 +38,11 @@
     input[type=range] {
       accent-color: #2563eb;
     }
+    #cropViewport {
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
   </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
@@ -58,25 +63,43 @@
     </div>
 
     <!-- Actions in header -->
-    <div class="flex items-center gap-2.5">
-      <button id="btnLoadSample" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-600 transition flex items-center gap-1.5 shadow-sm">
-        <span class="text-sm">🐱</span>
-        <span>載入範例 (可愛貓咪)</span>
+    <div class="flex items-center gap-2 flex-wrap">
+      <button id="btnLoadSample" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-2.5 py-1.5 rounded-lg border border-slate-600 transition flex items-center gap-1 shadow-sm whitespace-nowrap">
+        <span>🐱</span>
+        <span class="hidden sm:inline">載入範例</span>
+        <span class="sm:hidden">貓咪</span>
       </button>
 
-      <label for="imageUpload" class="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-lg font-medium shadow-md shadow-blue-600/30 cursor-pointer transition flex items-center gap-1.5">
+      <!-- 手機拍照自拍上傳 (capture=user) -->
+      <label for="cameraUpload" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-2.5 py-1.5 rounded-lg font-medium shadow-md cursor-pointer transition flex items-center gap-1 whitespace-nowrap">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span>拍照</span>
+      </label>
+      <input type="file" id="cameraUpload" accept="image/*" capture="user" class="hidden">
+
+      <label for="imageUpload" class="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg font-medium shadow-md shadow-blue-600/30 cursor-pointer transition flex items-center gap-1 whitespace-nowrap">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-        上傳我的照片
+        <span>選照片</span>
       </label>
       <input type="file" id="imageUpload" accept="image/*" class="hidden">
     </div>
   </header>
 
+  <!-- 手機端分頁切換 Tabs (僅在小螢幕顯示) -->
+  <div class="lg:hidden flex border-b border-slate-700 bg-slate-800/95 sticky top-0 z-20 select-none">
+    <button id="tabEdit" class="flex-1 py-3 text-center text-blue-400 font-bold border-b-2 border-blue-500 bg-slate-800 flex items-center justify-center gap-1.5 text-xs transition">
+      <span>✂️</span> 步驟 1-2: 臉部裁切
+    </button>
+    <button id="tabPrint" class="flex-1 py-3 text-center text-slate-400 font-medium border-b-2 border-transparent hover:text-white flex items-center justify-center gap-1.5 text-xs transition">
+      <span>🖨️</span> 步驟 3: 4x6 排版
+    </button>
+  </div>
+
   <!-- Main Content Grid -->
-  <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-0 overflow-hidden">
+  <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-0 overflow-y-auto lg:overflow-hidden">
     
     <!-- LEFT PANEL: 編輯與裁切調整 (5 cols) -->
-    <section class="lg:col-span-5 bg-slate-850 p-4 border-r border-slate-800 flex flex-col gap-4 overflow-y-auto max-h-[calc(100vh-105px)]">
+    <section id="panelEdit" class="col-span-12 lg:col-span-5 bg-slate-850 p-4 border-r border-slate-800 flex flex-col gap-4 overflow-y-auto max-h-none lg:max-h-[calc(100vh-105px)]">
       
       <!-- 規格選擇 -->
       <div class="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700/80 shadow-sm">
@@ -206,10 +229,22 @@
         </button>
       </div>
 
+      <!-- 手機專用：前往排版下一步按鈕 -->
+      <button id="btnGoToPrint" class="lg:hidden w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 text-sm transition mt-1">
+        <span>下一步：前往 4×6 沖印排版</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </button>
+
     </section>
 
     <!-- RIGHT PANEL: 4x6 相紙排版與列印預覽 (7 cols) -->
-    <section class="lg:col-span-7 bg-slate-900 p-4 flex flex-col gap-4 overflow-y-auto max-h-[calc(100vh-105px)]">
+    <section id="panelPrint" class="hidden lg:flex col-span-12 lg:col-span-7 bg-slate-900 p-4 flex-col gap-4 overflow-y-auto max-h-none lg:max-h-[calc(100vh-105px)]">
+      
+      <!-- 手機專用：返回上一步按鈕 -->
+      <button id="btnBackToEdit" class="lg:hidden w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium rounded-lg border border-slate-700 flex items-center justify-center gap-1.5 text-xs transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        <span>返回步驟 1-2 調整照片</span>
+      </button>
       
       <!-- 排版控制列 -->
       <div class="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -730,6 +765,66 @@
       state.isDragging = false;
     });
 
+    // --- 手機觸控事件 (單指拖曳平移 & 雙指捏合縮放) ---
+    let touchStartDist = 0;
+    let touchStartZoom = 1;
+
+    cropViewport.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        state.isDragging = true;
+        state.dragStartX = e.touches[0].clientX;
+        state.dragStartY = e.touches[0].clientY;
+      } else if (e.touches.length === 2) {
+        state.isDragging = false;
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        touchStartDist = Math.hypot(dx, dy);
+        touchStartZoom = parseFloat(sliderZoom.value);
+      }
+    }, { passive: false });
+
+    cropViewport.addEventListener('touchmove', (e) => {
+      e.preventDefault(); // 避免手機滑動頁面干擾裁切
+      if (!state.imageLoaded) return;
+
+      if (e.touches.length === 1 && state.isDragging) {
+        const dx = e.touches[0].clientX - state.dragStartX;
+        const dy = e.touches[0].clientY - state.dragStartY;
+        state.dragStartX = e.touches[0].clientX;
+        state.dragStartY = e.touches[0].clientY;
+
+        const viewRect = cropViewport.getBoundingClientRect();
+        const scaleFactor = cropCanvas.width / viewRect.width;
+
+        state.offsetX += dx * scaleFactor;
+        state.offsetY += dy * scaleFactor;
+        renderAll();
+      } else if (e.touches.length === 2 && touchStartDist > 0) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const currentDist = Math.hypot(dx, dy);
+        const scaleMultiplier = currentDist / touchStartDist;
+        
+        let newZoom = touchStartZoom * scaleMultiplier;
+        newZoom = Math.min(Math.max(newZoom, 0.3), 3);
+        sliderZoom.value = newZoom;
+        onZoomChanged();
+      }
+    }, { passive: false });
+
+    cropViewport.addEventListener('touchend', (e) => {
+      if (e.touches.length === 0) {
+        state.isDragging = false;
+        touchStartDist = 0;
+      } else if (e.touches.length === 1) {
+        // 從兩指變一指
+        state.isDragging = true;
+        state.dragStartX = e.touches[0].clientX;
+        state.dragStartY = e.touches[0].clientY;
+      }
+    });
+
+    // --- 滑鼠滾輪縮放 (桌面版) ---
     cropViewport.addEventListener('wheel', (e) => {
       e.preventDefault();
       if (!state.imageLoaded) return;
@@ -823,16 +918,51 @@
       }
     });
 
-    cropViewport.addEventListener('dragover', (e) => e.preventDefault());
-    cropViewport.addEventListener('drop', (e) => {
-      e.preventDefault();
-      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        const file = e.dataTransfer.files[0];
-        const reader = new FileReader();
-        reader.onload = (event) => loadImageFromSrc(event.target.result);
-        reader.readAsDataURL(file);
+    // 手機相機自拍上傳
+    const cameraUpload = document.getElementById('cameraUpload');
+    if (cameraUpload) {
+      cameraUpload.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => loadImageFromSrc(event.target.result);
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    // 手機版分頁切換控制
+    const tabEdit = document.getElementById('tabEdit');
+    const tabPrint = document.getElementById('tabPrint');
+    const panelEdit = document.getElementById('panelEdit');
+    const panelPrint = document.getElementById('panelPrint');
+    const btnGoToPrint = document.getElementById('btnGoToPrint');
+    const btnBackToEdit = document.getElementById('btnBackToEdit');
+
+    function switchMobileTab(tab) {
+      if (!tabEdit || !tabPrint) return;
+      if (tab === 'edit') {
+        tabEdit.className = "flex-1 py-3 text-center text-blue-400 font-bold border-b-2 border-blue-500 bg-slate-800 flex items-center justify-center gap-1.5 text-xs transition";
+        tabPrint.className = "flex-1 py-3 text-center text-slate-400 font-medium border-b-2 border-transparent hover:text-white flex items-center justify-center gap-1.5 text-xs transition";
+        panelEdit.classList.remove('hidden');
+        panelPrint.classList.add('hidden');
+        panelPrint.classList.remove('flex');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        tabPrint.className = "flex-1 py-3 text-center text-blue-400 font-bold border-b-2 border-blue-500 bg-slate-800 flex items-center justify-center gap-1.5 text-xs transition";
+        tabEdit.className = "flex-1 py-3 text-center text-slate-400 font-medium border-b-2 border-transparent hover:text-white flex items-center justify-center gap-1.5 text-xs transition";
+        panelPrint.classList.remove('hidden');
+        panelPrint.classList.add('flex');
+        panelEdit.classList.add('hidden');
+        renderPrintCanvas();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-    });
+    }
+
+    if (tabEdit) tabEdit.addEventListener('click', () => switchMobileTab('edit'));
+    if (tabPrint) tabPrint.addEventListener('click', () => switchMobileTab('print'));
+    if (btnGoToPrint) btnGoToPrint.addEventListener('click', () => switchMobileTab('print'));
+    if (btnBackToEdit) btnBackToEdit.addEventListener('click', () => switchMobileTab('edit'));
 
     btnLoadSample.addEventListener('click', () => {
       createDefaultSamplePhoto();
