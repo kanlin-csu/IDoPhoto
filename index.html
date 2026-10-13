@@ -502,73 +502,82 @@
         <!-- 背景純白 (證件照規範) -->
         <rect width="600" height="800" fill="url(#bg)"/>
 
-        <!-- 身體/穿著正式小西裝 -->
-        <path d="M 110 800 C 110 600, 200 540, 300 540 C 400 540, 490 600, 490 800 Z" fill="url(#tuxedo)"/>
-        <!-- 白襯衫領口 -->
-        <polygon points="255,540 345,540 300,645" fill="#ffffff"/>
-        <polygon points="280,540 260,575 300,570" fill="#f8fafc"/>
-        <polygon points="320,540 340,575 300,570" fill="#e2e8f0"/>
+        <!-- 身體與西裝肩線 (Shoulders & Suit) -->
+        <path d="M 90 800 C 90 610, 180 540, 300 540 C 420 540, 510 610, 510 800 Z" fill="url(#tuxedo)"/>
 
-        <!-- 可愛紅色蝴蝶結 (Red Bow Tie) -->
-        <polygon points="300,575 235,545 235,605" fill="url(#bowtie)"/>
-        <polygon points="300,575 365,545 365,605" fill="url(#bowtie)"/>
-        <rect x="290" y="565" width="20" height="20" rx="5" fill="#dc2626"/>
+        <!-- 毛茸茸的脖子過渡 (Fluffy Neck connecting Head to Body) -->
+        <path d="M 220 420 C 210 490, 220 540, 240 560 L 360 560 C 380 540, 390 490, 380 420 Z" fill="url(#ginger)"/>
+        <path d="M 250 430 C 245 490, 255 540, 300 565 C 345 540, 355 490, 350 430 Z" fill="url(#whiteFur)"/>
 
         <!-- 貓咪立耳 (左耳與右耳) -->
         <!-- 左耳 -->
-        <polygon points="175,280 180,125 280,210" fill="url(#ginger)"/>
-        <polygon points="190,260 195,145 265,215" fill="#fbcfe8"/>
+        <polygon points="175,270 175,115 275,200" fill="url(#ginger)"/>
+        <polygon points="188,250 188,135 262,205" fill="#fbcfe8"/>
         <!-- 右耳 -->
-        <polygon points="425,280 420,125 320,210" fill="url(#ginger)"/>
-        <polygon points="410,260 405,145 335,215" fill="#fbcfe8"/>
+        <polygon points="425,270 425,115 325,200" fill="url(#ginger)"/>
+        <polygon points="412,250 412,135 338,205" fill="#fbcfe8"/>
 
-        <!-- 圓滾滾的大頭 (Chubby Cat Face) -->
-        <ellipse cx="300" cy="340" rx="165" ry="155" fill="url(#ginger)"/>
+        <!-- 圓滾滾的大頭 (Chubby Cat Head) -->
+        <ellipse cx="300" cy="320" rx="155" ry="140" fill="url(#ginger)"/>
 
         <!-- 額頭經典橘貓虎斑條紋 (Tabby stripes) -->
-        <path d="M 300 200 L 300 240" stroke="#c2410c" stroke-width="7" stroke-linecap="round"/>
-        <path d="M 280 205 L 285 245" stroke="#c2410c" stroke-width="6" stroke-linecap="round"/>
-        <path d="M 320 205 L 315 245" stroke="#c2410c" stroke-width="6" stroke-linecap="round"/>
-        <path d="M 260 215 L 270 250" stroke="#c2410c" stroke-width="5" stroke-linecap="round"/>
-        <path d="M 340 215 L 330 250" stroke="#c2410c" stroke-width="5" stroke-linecap="round"/>
+        <path d="M 300 180 L 300 220" stroke="#c2410c" stroke-width="7" stroke-linecap="round"/>
+        <path d="M 280 185 L 285 225" stroke="#c2410c" stroke-width="6" stroke-linecap="round"/>
+        <path d="M 320 185 L 315 225" stroke="#c2410c" stroke-width="6" stroke-linecap="round"/>
+        <path d="M 260 195 L 270 230" stroke="#c2410c" stroke-width="5" stroke-linecap="round"/>
+        <path d="M 340 195 L 330 230" stroke="#c2410c" stroke-width="5" stroke-linecap="round"/>
 
-        <!-- 臉頰與下巴圓潤白毛 (White Muzzle & Chest) -->
-        <path d="M 230 330 Q 300 370 370 330 Q 430 420 370 470 Q 300 480 230 470 Q 170 420 230 330 Z" fill="url(#whiteFur)"/>
+        <!-- 臉頰與下巴圓潤白毛 (White Muzzle) -->
+        <path d="M 235 310 Q 300 350 365 310 Q 425 390 365 440 Q 300 450 235 440 Q 175 390 235 310 Z" fill="url(#whiteFur)"/>
 
-        <!-- 晶亮圓滾滾大眼 -->
+        <!-- 晶亮圓滾滾大眼 (Emerald Eyes) -->
         <!-- 左眼 -->
-        <ellipse cx="235" cy="325" rx="32" ry="34" fill="#ffffff"/>
-        <ellipse cx="235" cy="325" rx="27" ry="29" fill="url(#catEye)"/>
-        <ellipse cx="235" cy="325" rx="14" ry="24" fill="#0f172a"/>
-        <circle cx="225" cy="315" r="8" fill="#ffffff"/>
-        <circle cx="244" cy="336" r="3" fill="#ffffff"/>
+        <ellipse cx="240" cy="305" rx="30" ry="32" fill="#ffffff"/>
+        <ellipse cx="240" cy="305" rx="25" ry="27" fill="url(#catEye)"/>
+        <ellipse cx="240" cy="305" rx="13" ry="22" fill="#0f172a"/>
+        <circle cx="230" cy="295" r="7.5" fill="#ffffff"/>
+        <circle cx="248" cy="316" r="3" fill="#ffffff"/>
 
         <!-- 右眼 -->
-        <ellipse cx="365" cy="325" rx="32" ry="34" fill="#ffffff"/>
-        <ellipse cx="365" cy="325" rx="27" ry="29" fill="url(#catEye)"/>
-        <ellipse cx="365" cy="325" rx="14" ry="24" fill="#0f172a"/>
-        <circle cx="355" cy="315" r="8" fill="#ffffff"/>
-        <circle cx="374" cy="336" r="3" fill="#ffffff"/>
+        <ellipse cx="360" cy="305" rx="30" ry="32" fill="#ffffff"/>
+        <ellipse cx="360" cy="305" rx="25" ry="27" fill="url(#catEye)"/>
+        <ellipse cx="360" cy="305" rx="13" ry="22" fill="#0f172a"/>
+        <circle cx="350" cy="295" r="7.5" fill="#ffffff"/>
+        <circle cx="368" cy="316" r="3" fill="#ffffff"/>
 
         <!-- 粉嫩倒三角貓咪小鼻子 -->
-        <path d="M 288 385 Q 300 380 312 385 Q 306 402 300 402 Q 294 402 288 385 Z" fill="#fb7185"/>
+        <path d="M 289 360 Q 300 355 311 360 Q 305 375 300 375 Q 295 375 289 360 Z" fill="#fb7185"/>
 
         <!-- 貓咪「:3」可愛微笑嘴角 -->
-        <path d="M 300 402 L 300 410" stroke="#f43f5e" stroke-width="3" stroke-linecap="round"/>
-        <path d="M 276 418 Q 288 426 300 410 Q 312 426 324 418" stroke="#f43f5e" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <path d="M 300 375 L 300 383" stroke="#f43f5e" stroke-width="3" stroke-linecap="round"/>
+        <path d="M 278 390 Q 289 398 300 383 Q 311 398 322 390" stroke="#f43f5e" stroke-width="3.5" stroke-linecap="round" fill="none"/>
 
         <!-- 萌萌小腮紅 -->
-        <ellipse cx="205" cy="375" rx="16" ry="10" fill="#fecdd3" opacity="0.85"/>
-        <ellipse cx="395" cy="375" rx="16" ry="10" fill="#fecdd3" opacity="0.85"/>
+        <ellipse cx="210" cy="355" rx="16" ry="10" fill="#fecdd3" opacity="0.85"/>
+        <ellipse cx="390" cy="355" rx="16" ry="10" fill="#fecdd3" opacity="0.85"/>
 
         <!-- 俏皮貓鬍鬚 -->
-        <path d="M 265 400 Q 200 390 145 385" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-        <path d="M 260 412 Q 195 412 135 415" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-        <path d="M 265 422 Q 200 435 150 445" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M 270 375 Q 205 365 150 360" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M 265 387 Q 200 387 140 390" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M 270 397 Q 205 410 155 420" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
 
-        <path d="M 335 400 Q 400 390 455 385" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-        <path d="M 340 412 Q 405 412 465 415" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-        <path d="M 335 422 Q 400 435 450 445" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M 330 375 Q 395 365 450 360" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M 335 387 Q 400 387 460 390" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M 330 397 Q 395 410 445 420" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+
+        <!-- 白色立領襯衫 (Crisp Shirt Collar on the Neck) -->
+        <polygon points="250,470 292,530 260,545 230,485" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+        <polygon points="350,470 308,530 340,545 370,485" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+        <polygon points="280,520 320,520 300,620" fill="#ffffff"/>
+
+        <!-- 紳士紅色蝴蝶結 (Dapper Red Bow Tie) -->
+        <polygon points="300,535 240,505 240,565" fill="url(#bowtie)"/>
+        <polygon points="300,535 360,505 360,565" fill="url(#bowtie)"/>
+        <rect x="290" y="525" width="20" height="20" rx="5" fill="#dc2626"/>
+
+        <!-- 西裝翻領 (Tuxedo Lapels) -->
+        <polygon points="225,540 270,570 250,680 180,630" fill="#0f172a"/>
+        <polygon points="375,540 330,570 350,680 420,630" fill="#0f172a"/>
       </svg>
       `;
       const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
