@@ -226,6 +226,18 @@
           </div>
         </div>
 
+        <!-- 本機 AI 一鍵去背 (選用功能) -->
+        <div class="w-full mt-2.5 pt-2.5 border-t border-slate-750 flex flex-col gap-1.5">
+          <button id="btnAiCutout" class="w-full py-2 px-3 bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-600 hover:from-purple-600 hover:to-blue-500 text-white font-medium rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md shadow-indigo-900/30 transition">
+            <span class="text-sm">🪄</span>
+            <span>純本機 AI 一鍵去背</span>
+            <span class="text-[10px] bg-white/20 text-blue-100 px-1.5 py-0.5 rounded-full font-normal">選用功能</span>
+          </button>
+          <div class="text-[10px] text-slate-400 text-center">
+            💡 建議：若手機相簿已有內建長按去背，建議自行去背後直接上傳
+          </div>
+        </div>
+
       </div>
 
       <!-- 下載單張證件照區塊 -->
@@ -392,6 +404,58 @@
 
       <div class="mt-5 pt-3 border-t border-slate-700 flex justify-end">
         <button id="btnModalCloseAction" class="text-xs bg-slate-700 hover:bg-slate-600 text-white px-4 py-1.5 rounded-lg transition font-medium">關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI 去背確認與流量提醒 Modal -->
+  <div id="aiCutoutModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-850 border border-slate-700 rounded-2xl max-w-md w-full p-5 shadow-2xl relative text-slate-200">
+      <div class="flex items-center gap-2.5 text-purple-400 font-bold text-base border-b border-slate-700 pb-3 mb-3.5">
+        <span class="text-xl">🪄</span>
+        <span>純本機 AI 一鍵去背（選用功能）</span>
+      </div>
+
+      <div class="text-xs text-slate-300 space-y-3 leading-relaxed">
+        <div class="bg-purple-950/40 border border-purple-800/60 p-3 rounded-xl space-y-1.5 text-purple-200">
+          <div class="font-bold flex items-center gap-1.5 text-purple-300">
+            <span>📶 首次啟動流量提醒 (約 30~40 MB)</span>
+          </div>
+          <p class="text-[11px] text-purple-200/80 leading-normal">
+            本功能為<b>100% 瀏覽器本機端執行</b>（零照片上傳）。首次使用時，瀏覽器需從 CDN 下載約 <b>35 MB</b> 的神經網路模型（下載後自動快取，下次離線免下載）。
+          </p>
+        </div>
+
+        <div class="bg-slate-900/70 border border-slate-750 p-3 rounded-xl space-y-1.5">
+          <div class="font-bold text-slate-200 flex items-center gap-1.5">
+            <span>💡 強烈建議使用情境：</span>
+          </div>
+          <ul class="list-disc list-inside space-y-1 text-[11px] text-slate-400">
+            <li><b>建議自行去背</b>：iPhone、三星或多數手機相簿皆有內建<b>「長按 1 秒自動去背」</b>功能，去背後直接上傳最快最省流量！</li>
+            <li><b>Wi-Fi 或電腦環境</b>：若您無其他去背工具且在 Wi-Fi 環境，可點擊下方按鈕啟動本機 AI。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 進度指示器 -->
+      <div id="aiProgressArea" class="hidden mt-3.5 pt-3 border-t border-slate-750 space-y-2">
+        <div class="flex justify-between text-xs text-purple-300">
+          <span id="aiProgressText">正在下載 AI 模型...</span>
+          <span id="aiProgressPercent">0%</span>
+        </div>
+        <div class="w-full bg-slate-750 h-2 rounded-full overflow-hidden">
+          <div id="aiProgressBar" class="bg-gradient-to-r from-purple-500 to-indigo-500 h-full w-0 transition-all duration-200"></div>
+        </div>
+      </div>
+
+      <!-- 按鈕區 -->
+      <div id="aiModalButtons" class="mt-4 pt-3 border-t border-slate-750 flex items-center justify-end gap-2.5">
+        <button id="btnCancelAi" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-xl border border-slate-700 transition">
+          取消 (我自己去背)
+        </button>
+        <button id="btnConfirmAi" class="text-xs bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-4 py-2 rounded-xl shadow-lg transition flex items-center gap-1.5">
+          <span>確定啟動 (載入模型)</span>
+        </button>
       </div>
     </div>
   </div>
@@ -1098,6 +1162,74 @@
     infoModal.addEventListener('click', (e) => {
       if (e.target === infoModal) closeModal();
     });
+
+    // --- 本機 AI 一鍵去背互動邏輯 (按需動態載入) ---
+    const btnAiCutout = document.getElementById('btnAiCutout');
+    const aiCutoutModal = document.getElementById('aiCutoutModal');
+    const btnCancelAi = document.getElementById('btnCancelAi');
+    const btnConfirmAi = document.getElementById('btnConfirmAi');
+    const aiModalButtons = document.getElementById('aiModalButtons');
+    const aiProgressArea = document.getElementById('aiProgressArea');
+    const aiProgressText = document.getElementById('aiProgressText');
+    const aiProgressPercent = document.getElementById('aiProgressPercent');
+    const aiProgressBar = document.getElementById('aiProgressBar');
+
+    if (btnAiCutout) {
+      btnAiCutout.addEventListener('click', () => {
+        if (!state.imageLoaded || !state.image) {
+          showToast('請先上傳照片後再進行去背', 'warn');
+          return;
+        }
+        aiCutoutModal.classList.remove('hidden');
+        aiProgressArea.classList.add('hidden');
+        aiModalButtons.classList.remove('hidden');
+        aiProgressBar.style.width = '0%';
+        aiProgressPercent.innerText = '0%';
+      });
+    }
+
+    if (btnCancelAi) {
+      btnCancelAi.addEventListener('click', () => {
+        aiCutoutModal.classList.add('hidden');
+      });
+    }
+
+    if (btnConfirmAi) {
+      btnConfirmAi.addEventListener('click', async () => {
+        aiModalButtons.classList.add('hidden');
+        aiProgressArea.classList.remove('hidden');
+        aiProgressText.innerText = '正在初始化並載入 AI 模型...';
+        aiProgressBar.style.width = '10%';
+        aiProgressPercent.innerText = '10%';
+
+        try {
+          // 動態載入本機端去背庫 (不點擊不會載入任何外部檔案)
+          const { removeBackground } = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/+esm');
+
+          const blob = await removeBackground(state.image, {
+            progress: (key, current, total) => {
+              if (total && total > 0) {
+                const pct = Math.round((current / total) * 100);
+                aiProgressBar.style.width = `${pct}%`;
+                aiProgressPercent.innerText = `${pct}%`;
+                aiProgressText.innerText = `下載模型資源 (${key}): ${pct}%`;
+              } else {
+                aiProgressText.innerText = `AI 正在本機端計算分離背景中...`;
+              }
+            }
+          });
+
+          const cutUrl = URL.createObjectURL(blob);
+          loadImageFromSrc(cutUrl);
+          aiCutoutModal.classList.add('hidden');
+          showToast('✅ 去背完成！已自動套用證件照純白底', 'info');
+        } catch (err) {
+          console.error('AI 去背失敗:', err);
+          aiCutoutModal.classList.add('hidden');
+          showToast('AI 去背運算遇到問題，建議手動上傳去背圖', 'error');
+        }
+      });
+    }
 
     // --- 注入真實 300 DPI 實體物理標記至 JPEG (JFIF Header) ---
     function exportCanvasAs300DpiJpeg(canvas, quality = 0.95, dpi = 300) {
