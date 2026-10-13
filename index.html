@@ -4,6 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IDoPhoto - 證件照/大頭照排版產生器</title>
+
+  <!-- PWA 漸進式網頁應用支援 -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1e293b">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="IDoPhoto">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -65,6 +76,12 @@
 
     <!-- Actions in header -->
     <div class="flex items-center gap-2 flex-wrap">
+      <!-- PWA 安裝按鈕 (支援時自動顯示) -->
+      <button id="btnInstallPwa" class="hidden text-xs bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-2.5 py-1.5 rounded-lg font-medium shadow-md shadow-emerald-700/20 transition items-center gap-1 whitespace-nowrap">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        <span>安裝 App</span>
+      </button>
+
       <button id="btnLoadSample" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-2.5 py-1.5 rounded-lg border border-slate-600 transition flex items-center gap-1 shadow-sm whitespace-nowrap">
         <span>🐱</span>
         <span class="hidden sm:inline">載入範例</span>
@@ -1165,6 +1182,50 @@
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
       showToast('✅ 已下載 4×6 沖印圖（內嵌 300 DPI 規格標記）', 'info');
+    });
+
+    // --- PWA Service Worker 註冊與安裝提示 ---
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then((reg) => {
+          console.log('IDoPhoto PWA Ready:', reg.scope);
+        }).catch((err) => {
+          console.warn('PWA registration error:', err);
+        });
+      });
+    }
+
+    let deferredPrompt = null;
+    const btnInstallPwa = document.getElementById('btnInstallPwa');
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (btnInstallPwa) {
+        btnInstallPwa.classList.remove('hidden');
+        btnInstallPwa.classList.add('flex');
+      }
+    });
+
+    if (btnInstallPwa) {
+      btnInstallPwa.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          showToast('🎉 感謝安裝 IDoPhoto！您可從手機桌面隨時開啟', 'info');
+        }
+        deferredPrompt = null;
+        btnInstallPwa.classList.add('hidden');
+        btnInstallPwa.classList.remove('flex');
+      });
+    }
+
+    window.addEventListener('appinstalled', () => {
+      deferredPrompt = null;
+      if (btnInstallPwa) {
+        btnInstallPwa.classList.add('hidden');
+        btnInstallPwa.classList.remove('flex');
+      }
     });
 
     // 初始化

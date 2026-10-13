@@ -141,7 +141,21 @@
   * 於編輯控制面板常駐「需要照片去背？」專屬區塊，直接提供 **[Canva 線上免費去背](https://www.canva.com/zh_tw/features/background-remover/)** 官方專屬連結。
   * 明確引導使用者利用專業伺服器 AI（Canva）或手機晶片硬體（iPhone / Pixel 長按 1 秒去背）產生高精度透明圖，上傳至 IDoPhoto 後**自動無縫套用證件純白底（#FFFFFF）**，兼顧最完美髮絲效果與沖印規格。
 
-
-
+### 12. PWA (Progressive Web App) 化：跨平台原生級 App 安裝與 100% 離線工作支援
+* **Web App Manifest (`manifest.json`)**：
+  * 定義標準 PWA 清單，包括 `name: IDoPhoto 證件照排版沖印工具`、`short_name: IDoPhoto`、`display: standalone`、`theme_color: #1e293b`、`background_color: #0f172a`。
+  * 支援深色模式沈浸式標題列，消除瀏覽器網址列與外框，達到原生 App 般的沈浸全螢幕視覺體驗。
+* **高解析度品牌應用圖示 (Icons)**：
+  * 自動生成標準相機結合證件照輪廓的品牌圖示：
+    * `icon-192.png` (192×192)：標準桌面/手機安裝圖示。
+    * `icon-512.png` (512×512)：高解析度啟動啟動畫面圖示。
+    * `icon-maskable-512.png` (512×512 Maskable)：針對 Android 適應性圖示裁切規範，保留 20% 安全邊距（Safe Zone）。
+    * `apple-touch-icon.png` (180×180)：專為 iPhone / iPad Safari 「加入主畫面」優化之專用圖示。
+* **離線 Service Worker (`sw.js`)**：
+  * 實作 Network-First 策略搭配 Cache 回退機制，兼顧隨時取得最新版本與斷網極致可用性。
+  * 快取核心本機靜態檔案與 Tailwind CSS CDN，確保使用者在無網路、飛航模式或訊號不佳環境下，仍可 100% 正常載入、自訂裁切排版並輸出 300 DPI 4×6 沖印大檔。
+* **智慧安裝按鈕與跨平台體驗**：
+  * 頂部導覽列整合「安裝 App」動態按鈕（`#btnInstallPwa`），攔截並監聽瀏覽器 `beforeinstallprompt` 事件，使用者一鍵即可呼叫瀏覽器原生安裝對話框。
+  * 針對不支援 `beforeinstallprompt` 的 iOS Safari，完整支援 Apple 原生 Web App Meta 標籤，相容於「分享按鈕 -> 加入主畫面」。
 
 
