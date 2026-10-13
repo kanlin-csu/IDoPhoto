@@ -108,5 +108,6 @@
   * 去背完成後即時輸出透明圖並載入編輯畫布，背底自動填補標準證件純白色（#FFFFFF），直接銜接對齊排版。
 * **核心問題修復 (Bugfix)**：
   * 修復底層函式型別限制：原先傳入 DOM `HTMLImageElement` 物件導致 `n.shape is undefined` 內部拋錯，改由離屏 Canvas 先轉為標準 `Blob` 資料流後再傳入。
-  * 明確指定 `publicPath` 至支援 CORS 之高速 CDN（unpkg），並指定 `model: 'small'`（40MB 輕量模型），解決國外預設 CDN 連線逾時與記憶體佔用問題。
+  * 解決 `lodash memoize` 匯出錯誤：先前引用的 1.4.5 版底層依賴 CommonJS `lodash`，導致 CDN 產生的 ESM 缺失 `memoize` 具名匯出；升級至 `@imgly/background-removal@1.7.0`（遷移至 `lodash-es` 且單一打包零外部引用），搭配官方 1.7.0 資源路徑與 `small` 輕量模型，徹底解決模組解析問題。
+
 

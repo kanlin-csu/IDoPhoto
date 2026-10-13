@@ -1219,16 +1219,16 @@
           aiProgressBar.style.width = '20%';
           aiProgressPercent.innerText = '20%';
 
-          // 2. 動態載入本機端去背庫 (不點擊不會載入任何外部檔案)
-          const { removeBackground } = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/+esm');
+          // 2. 動態載入本機端去背庫 (升級至 1.7.0，採用 lodash-es 自包含打包，徹底解決 memoize 匯出異常)
+          const { removeBackground } = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
 
           aiProgressText.innerText = '正在讀取神經網路模型 (約 40MB)...';
           aiProgressBar.style.width = '30%';
           aiProgressPercent.innerText = '30%';
 
-          // 3. 呼叫本機端 WebAssembly / ONNX 推論，指定 small 輕量快速模型與 unpkg CDN
+          // 3. 呼叫本機端 WebAssembly / ONNX 推論，指定 small 輕量快速模型與官方 CDN
           const blob = await removeBackground(inputBlob, {
-            publicPath: 'https://unpkg.com/@imgly/background-removal-data@1.4.5/dist/',
+            publicPath: 'https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/',
             model: 'small',
             progress: (key, current, total) => {
               if (total && total > 0) {
