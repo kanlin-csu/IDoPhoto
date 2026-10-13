@@ -108,6 +108,18 @@
   * 去背完成後即時輸出透明圖並載入編輯畫布，背底自動填補標準證件純白色（#FFFFFF），直接銜接對齊排版。
 * **核心問題修復 (Bugfix)**：
   * 修復底層函式型別限制：原先傳入 DOM `HTMLImageElement` 物件導致 `n.shape is undefined` 內部拋錯，改由離屏 Canvas 先轉為標準 `Blob` 資料流後再傳入。
-  * 解決 `lodash memoize` 匯出錯誤：先前引用的 1.4.5 版底層依賴 CommonJS `lodash`，導致 CDN 產生的 ESM 缺失 `memoize` 具名匯出；升級至 `@imgly/background-removal@1.7.0`（遷移至 `lodash-es` 且單一打包零外部引用），搭配官方 1.7.0 資源路徑與 `small` 輕量模型，徹底解決模組解析問題。
+  * 解決 `lodash memoize` 匯出錯誤：先前引用的 1.4.5 版底層依賴 CommonJS `lodash`，導致 CDN 產生的 ESM 缺失 `memoize` 具名匯出；升級至 `@imgly/background-removal@1.7.0`（遷移至 `lodash-es` 且單一打包零外部引用）。
+
+### 9. v1.0 正式版號發布與 AI 引擎重構：Google MediaPipe 輕量化
+* **標題常駐版號徽章 (v1.0 Release)**：
+  * 於頂部導覽列標題旁增設醒目版號徽章 `v1.0`，明確標註目前版本，方便後續改版升級追蹤。
+* **解決行動裝置 (Pixel / Android) "Failed to fetch" 與連線逾時**：
+  * 分析原因：原 ONNX 方案需跨洋連線至德州伺服器併發下載 11 個 chunk（44MB），在行動網路下極易連線逾時中斷導致 `Failed to fetch`。
+  * 徹底解決：全面遷移至 **Google MediaPipe Selfie Segmentation**。
+    * **模型超輕量**：模型檔僅 **249 KB**，加 WASM 總共不到 **5.8 MB**（體積縮小近 90%）。
+    * **本地 CDN 快取**：全面採用台灣本地邊緣快取節點（jsDelivr），載入速度降至 1 秒內。
+    * **原生適配**：Google 專為 Android/Chrome/Pixel 設計之輕量邊緣端人像分割，SIMD 硬體加速，運算僅需 200ms。
+    * 自動保留遮罩內人像主體，並於背景填補標準證件純白底（#FFFFFF）。
+
 
 
