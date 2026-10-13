@@ -194,7 +194,7 @@
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
 
   <!-- Header -->
-  <header class="bg-slate-800 border-b border-slate-700 px-6 py-3.5 flex flex-wrap items-center justify-between sticky top-0 z-30 shadow-md gap-3">
+  <header id="top" class="bg-slate-800 border-b border-slate-700 px-6 py-3.5 flex flex-wrap items-center justify-between sticky top-0 z-30 shadow-md gap-3">
     <div class="flex items-center gap-3">
       <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 text-white font-extrabold text-base tracking-tight">
         IDo
@@ -468,10 +468,10 @@
       </div>
 
       <!-- 4x6 排版預覽畫布容器 -->
-      <div class="flex-1 bg-slate-950/60 rounded-xl border border-slate-800 p-4 flex flex-col items-center justify-center min-h-[360px] overflow-auto">
+      <div class="flex-1 bg-slate-950/60 rounded-xl border border-slate-800 p-3 sm:p-4 flex flex-col items-center justify-center min-h-[300px] overflow-auto">
         <div class="relative shadow-2xl border border-slate-700 bg-white rounded overflow-hidden max-w-full">
-          <!-- 4x6 相紙渲染畫布 (真實解析度 1800x1200, 透過 CSS 等比縮放適應視窗) -->
-          <canvas id="printCanvas" width="1800" height="1200" class="block max-w-full h-auto" style="max-height: 460px;"></canvas>
+          <!-- 4x6 相紙渲染畫布 (真實解析度 1800x1200, 透過 CSS 等比縮放適應視窗，保證下方實體校對標尺與裁切線完整露出版面) -->
+          <canvas id="printCanvas" width="1800" height="1200" class="block max-w-full h-auto" style="max-height: min(440px, calc(100vh - 340px));"></canvas>
         </div>
       </div>
 
@@ -488,125 +488,170 @@
         </ul>
       </div>
 
-      <!-- 規格指南與常見問答 SEO / GEO 結構化內容 -->
-      <section id="seoKnowledgeSection" class="bg-slate-800/60 rounded-xl p-4 border border-slate-700/80 space-y-4 text-xs text-slate-300">
+    </section>
+
+  </main>
+
+  <!-- 規格指南與常見問答 SEO / GEO 結構化內容 (獨立全寬專區，不影響上方排版畫布) -->
+  <section id="seoKnowledgeSection" class="w-full bg-slate-900 border-t border-slate-800 py-10 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto space-y-8 text-slate-300">
+      
+      <!-- 區塊標題 -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
         <div>
-          <h2 class="text-sm font-bold text-slate-100 flex items-center gap-1.5 mb-1.5">
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span>📚</span>
+            <span>證件照排版規格指南與常見問答</span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">
+            PhotoCap Web 版線上相館・台灣標準證件規範速查・4×6 超商沖印 6 元省錢攻略
+          </p>
+        </div>
+        <a href="#top" class="text-xs bg-slate-800 hover:bg-slate-700 text-blue-400 px-3 py-1.5 rounded-lg border border-slate-700 self-start sm:self-auto flex items-center gap-1 transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+          <span>返回上方排版</span>
+        </a>
+      </div>
+
+      <!-- 兩欄卡片：左欄規格速查表，右欄超商沖印攻略 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- 卡片 1: 常用證件照規格速查 -->
+        <div class="bg-slate-850 rounded-xl p-5 border border-slate-800 space-y-3">
+          <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
             <span>📋</span>
             <span>台灣常見證件照規格尺寸指南</span>
-          </h2>
+          </h3>
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-[11px] border-collapse">
+            <table class="w-full text-left text-xs border-collapse">
               <thead>
-                <tr class="border-b border-slate-700 text-slate-400">
-                  <th class="py-1 px-1.5">證件類型</th>
-                  <th class="py-1 px-1.5">實體尺寸</th>
-                  <th class="py-1 px-1.5">300 DPI 像素</th>
-                  <th class="py-1 px-1.5">關鍵規範</th>
+                <tr class="border-b border-slate-750 text-slate-400">
+                  <th class="py-1.5 px-2">證件類型</th>
+                  <th class="py-1.5 px-2">實體尺寸</th>
+                  <th class="py-1.5 px-2">300 DPI</th>
+                  <th class="py-1.5 px-2">關鍵規範</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-750 text-slate-300">
+              <tbody class="divide-y divide-slate-800 text-slate-300">
                 <tr>
-                  <td class="py-1 px-1.5 font-medium text-blue-300">2 吋 護照 / 身分證</td>
-                  <td class="py-1 px-1.5">35 × 45 mm</td>
-                  <td class="py-1 px-1.5">413 × 531 px</td>
-                  <td class="py-1 px-1.5 text-amber-300">頭頂至下巴 3.2~3.6cm</td>
+                  <td class="py-1.5 px-2 font-medium text-blue-300">2 吋 護照/身分證</td>
+                  <td class="py-1.5 px-2">35 × 45 mm</td>
+                  <td class="py-1.5 px-2">413 × 531 px</td>
+                  <td class="py-1.5 px-2 text-amber-300">頭頂至下巴 3.2~3.6cm</td>
                 </tr>
                 <tr>
-                  <td class="py-1 px-1.5 font-medium text-blue-300">2 吋 健保卡 / 半身</td>
-                  <td class="py-1 px-1.5">35 × 45 mm</td>
-                  <td class="py-1 px-1.5">413 × 531 px</td>
-                  <td class="py-1 px-1.5">頭頂至下巴約 2.5~3.0cm</td>
+                  <td class="py-1.5 px-2 font-medium text-blue-300">2 吋 健保卡/半身</td>
+                  <td class="py-1.5 px-2">35 × 45 mm</td>
+                  <td class="py-1.5 px-2">413 × 531 px</td>
+                  <td class="py-1.5 px-2">頭頂約 2.5~3.0cm</td>
                 </tr>
                 <tr>
-                  <td class="py-1 px-1.5 font-medium text-blue-300">1 吋 駕照 / 證照</td>
-                  <td class="py-1 px-1.5">28 × 35 mm</td>
-                  <td class="py-1 px-1.5">331 × 413 px</td>
-                  <td class="py-1 px-1.5">五官清晰露耳露眉</td>
+                  <td class="py-1.5 px-2 font-medium text-blue-300">1 吋 駕照/證照</td>
+                  <td class="py-1.5 px-2">28 × 35 mm</td>
+                  <td class="py-1.5 px-2">331 × 413 px</td>
+                  <td class="py-1.5 px-2">五官清晰露耳露眉</td>
                 </tr>
                 <tr>
-                  <td class="py-1 px-1.5 font-medium text-blue-300">美簽 / 印度簽證 (2×2 吋)</td>
-                  <td class="py-1 px-1.5">50 × 50 mm</td>
-                  <td class="py-1 px-1.5">591 × 591 px</td>
-                  <td class="py-1 px-1.5">正方形頭部佔 50%~69%</td>
+                  <td class="py-1.5 px-2 font-medium text-blue-300">美簽/印簽 (2×2吋)</td>
+                  <td class="py-1.5 px-2">50 × 50 mm</td>
+                  <td class="py-1.5 px-2">591 × 591 px</td>
+                  <td class="py-1.5 px-2">正方形頭部佔 50~69%</td>
                 </tr>
               </tbody>
             </table>
           </div>
-        </div>
-
-        <div class="border-t border-slate-750 pt-3">
-          <h2 class="text-sm font-bold text-slate-100 flex items-center gap-1.5 mb-2">
-            <span>💡</span>
-            <span>4×6 超商沖印 6 元省錢攻略 (7-11 ibon & 全家立可得)</span>
-          </h2>
-          <p class="text-[11px] text-slate-300 leading-relaxed mb-2">
-            傳統照相館一組證件照動輒 150～350 元。使用 <b>IDoPhoto</b> 排版完成後，只要把產生的 4×6 圖片存在手機或隨身碟，到 7-11 或全家便利商店機台選擇<b>「4×6 相片沖印」</b>（生活照相紙方案），單張僅需 <b>6～10 元</b>即可一次獲得 8 至 10 張高品質實體證件照！
+          <p class="text-[11px] text-slate-400 pt-1">
+            💡 本站提供綠色護照頭頂範圍帶，對齊後保證符合外交部領事事務局嚴格送件標準。
           </p>
         </div>
 
-        <div class="border-t border-slate-750 pt-3 space-y-2">
-          <h2 class="text-sm font-bold text-slate-100 flex items-center gap-1.5 mb-1.5">
-            <span>❓</span>
-            <span>常見問題解答 (FAQ)</span>
-          </h2>
-          
-          <details class="bg-slate-900/60 rounded-lg p-2.5 border border-slate-750/70 group">
+        <!-- 卡片 2: 超商 6 元省錢攻略 -->
+        <div class="bg-slate-850 rounded-xl p-5 border border-slate-800 space-y-3 flex flex-col justify-between">
+          <div>
+            <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+              <span>💡</span>
+              <span>4×6 超商沖印 6 元省錢攻略 (7-11 ibon & 全家立可得)</span>
+            </h3>
+            <div class="text-xs text-slate-300 leading-relaxed space-y-2 mt-2">
+              <p>傳統照相館一組證件照動輒 150～350 元。使用 <b>IDoPhoto</b> 排版完成後：</p>
+              <ol class="list-decimal list-inside space-y-1 text-slate-300 text-[11px]">
+                <li>點擊「下載 4×6 列印檔」取得內嵌 300 DPI 實體規格的高解析度圖檔。</li>
+                <li>傳至手機或隨身碟，前往 7-11 ibon 或全家立可得機台。</li>
+                <li>在機台畫面選擇<b>「4×6 吋相片沖印」</b>（生活照方案，單張僅 <b>6～10 元</b>）。</li>
+                <li>列印選項務必勾選<b>「符合照片 / 滿版列印」</b>（關閉自動裁切），印出後沿著十字線剪下即可得到 8~10 張標準證件照！</li>
+              </ol>
+            </div>
+          </div>
+          <div class="text-[11px] text-emerald-400/90 bg-emerald-950/40 p-2.5 rounded-lg border border-emerald-900/60 mt-2">
+            ✓ 100% 純前端離線運算：照片不經由任何雲端伺服器，嚴格保護個人肖像隱私安全。
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FAQ 手風琴 -->
+      <div class="space-y-3">
+        <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+          <span>❓</span>
+          <span>常見問題解答 (FAQ)</span>
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <details class="bg-slate-850 rounded-xl p-3.5 border border-slate-800 group">
             <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
               <span>到 7-11 或全家印證件照，機台要選什麼選項？</span>
               <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
             </summary>
-            <p class="mt-2 text-[11px] text-slate-300 leading-relaxed pl-1 border-l-2 border-blue-500">
+            <p class="mt-2 text-xs text-slate-300 leading-relaxed pl-2 border-l-2 border-blue-500">
               請務必在機台選擇<b>「4×6 吋相片沖印」</b>（生活照相紙列印），切勿點選證件照專案；設定時請確認<b>滿版/不裁切</b>，印出後沿十字裁切線剪下即可。
             </p>
           </details>
 
-          <details class="bg-slate-900/60 rounded-lg p-2.5 border border-slate-750/70 group">
+          <details class="bg-slate-850 rounded-xl p-3.5 border border-slate-800 group">
             <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
               <span>為什麼護照照片對頭頂比例這麼嚴格？</span>
               <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
             </summary>
-            <p class="mt-2 text-[11px] text-slate-300 leading-relaxed pl-1 border-l-2 border-blue-500">
+            <p class="mt-2 text-xs text-slate-300 leading-relaxed pl-2 border-l-2 border-blue-500">
               依外交部領事事務局規定，護照與身分證頭頂至下巴必須介於 3.2cm 至 3.6cm 之間。IDoPhoto 特製了綠色半透明頭頂輔助帶，只要將照片頭頂調至框內，下巴平視對齊，即可保證審核通過不被退件。
             </p>
           </details>
 
-          <details class="bg-slate-900/60 rounded-lg p-2.5 border border-slate-750/70 group">
+          <details class="bg-slate-850 rounded-xl p-3.5 border border-slate-800 group">
             <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
               <span>我的照片會被上傳到後台伺服器嗎？</span>
               <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
             </summary>
-            <p class="mt-2 text-[11px] text-slate-300 leading-relaxed pl-1 border-l-2 border-blue-500">
+            <p class="mt-2 text-xs text-slate-300 leading-relaxed pl-2 border-l-2 border-blue-500">
               絕不上傳！IDoPhoto 為 100% 純前端靜態工具，所有裁切與高解析度運算均在您本機的瀏覽器記憶體中完成，關閉網頁即自動銷毀，絕無生物隱私外洩風險。
             </p>
           </details>
 
-          <details class="bg-slate-900/60 rounded-lg p-2.5 border border-slate-750/70 group">
+          <details class="bg-slate-850 rounded-xl p-3.5 border border-slate-800 group">
             <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
               <span>需要手機 App 嗎？如何安裝到手機桌面？</span>
               <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
             </summary>
-            <p class="mt-2 text-[11px] text-slate-300 leading-relaxed pl-1 border-l-2 border-blue-500">
+            <p class="mt-2 text-xs text-slate-300 leading-relaxed pl-2 border-l-2 border-blue-500">
               IDoPhoto 支援 PWA 規範。Android 手機可點擊網頁頂部「安裝 App」按鈕；iPhone Safari 可點擊底部分享圖示選擇「加入主畫面」。安裝後免連網或飛航模式亦可順暢使用。
             </p>
           </details>
 
-          <details class="bg-slate-900/60 rounded-lg p-2.5 border border-slate-750/70 group">
+          <details class="bg-slate-850 rounded-xl p-3.5 border border-slate-800 group md:col-span-2">
             <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
               <span>照片背景不是白色的話怎麼去背？</span>
               <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
             </summary>
-            <p class="mt-2 text-[11px] text-slate-300 leading-relaxed pl-1 border-l-2 border-blue-500">
+            <p class="mt-2 text-xs text-slate-300 leading-relaxed pl-2 border-l-2 border-blue-500">
               可利用 iPhone / Pixel / 三星手機相簿的「長按 1 秒去背」，或使用 Canva 免費線上照片去背。產生的透明圖檔上傳後，IDoPhoto 會自動套用標準證件純白底（#FFFFFF）。
             </p>
           </details>
         </div>
-      </section>
+      </div>
 
+    </div>
+  </section>
 
-    </section>
-
-  </main>
 
   <!-- 底部 Footer (隱私聲明 & MIT 授權) -->
   <footer class="bg-slate-850 border-t border-slate-800 px-6 py-2.5 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-3 z-20">

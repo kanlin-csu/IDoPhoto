@@ -170,5 +170,5 @@
   * `robots.txt`：開放 Googlebot、Bingbot，並明確歡迎 GPTBot、ChatGPT-User、PerplexityBot、ClaudeBot 等 AI 檢索代理人。
   * `sitemap.xml`：提供標準 XML 網站地圖。
   * `llms.txt`：依據新興 LLM 文字標準，提供低 Token 純文字說明與常見問答快速指引。
-* **頁面語意化規格速查與 FAQ 手風琴**：
-  * 於 `#panelPrint` 下方加入常用證件尺寸速查表、超商省錢攻略，以及語意化 `<details><summary>` 常見問答區，豐富長尾關鍵字，便於 Google 與 AI 引用。
+* **獨立全寬規格速查與 FAQ 專區（佈局優化防遮擋）**：
+  * 將常用證件尺寸速查表、超商省錢攻略與語意化 `<details><summary>` FAQ 移至主編輯區下方之獨立全寬專區，既豐富長尾關鍵字便於 Google 與 AI 引用，又徹底釋放右側 `#panelPrint` 沖印工作台高度，保證 4×6 預覽畫布與 20mm 實體校對標尺 100% 完整無遮擋。
