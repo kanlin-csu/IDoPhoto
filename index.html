@@ -124,6 +124,17 @@
             <div class="text-[10px] text-slate-400 mt-0.5">2.8 × 3.5 cm</div>
           </button>
         </div>
+
+        <!-- 官方規範出處與免責宣告 -->
+        <div class="mt-2.5 pt-2 border-t border-slate-700/60 text-[10px] text-slate-400 space-y-0.5">
+          <div class="flex items-center gap-1 text-slate-300">
+            <svg class="w-3.5 h-3.5 text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>依據外交部領事事務局、戶政司與出入境管理局標準制定。</span>
+          </div>
+          <p class="text-slate-400/80 leading-normal pl-4.5">
+            ⚠️ 輔助線僅供比例對齊參考，背景與服儀請遵守規定，審核以受理機關為準。
+          </p>
+        </div>
       </div>
 
       <!-- 裁切互動區 (Crop Workspace) -->
@@ -498,20 +509,84 @@
     const modalContentPrivacy = document.getElementById('modalContentPrivacy');
     const modalContentLicense = document.getElementById('modalContentLicense');
 
+    // --- 訊息提示 Toast ---
+    function showToast(message, type = 'info') {
+      let toast = document.getElementById('appToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'appToast';
+        toast.className = 'fixed bottom-14 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl text-xs font-semibold shadow-2xl transition-all duration-300 pointer-events-none opacity-0';
+        document.body.appendChild(toast);
+      }
+      toast.innerText = message;
+      const bgClass = type === 'error' ? 'bg-rose-600 text-white shadow-rose-950/60' :
+                      type === 'warn' ? 'bg-amber-600 text-white shadow-amber-950/60' :
+                      'bg-slate-800 text-blue-300 border border-slate-700 shadow-black/60';
+      toast.className = `fixed bottom-14 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl text-xs font-semibold shadow-2xl transition-all duration-300 pointer-events-none opacity-100 ${bgClass}`;
+      setTimeout(() => {
+        toast.classList.replace('opacity-100', 'opacity-0');
+      }, 3000);
+    }
+
     // --- 載入預設真實貓咪照片 (cat.jpg) ---
     function createDefaultSamplePhoto() {
       loadImageFromSrc('cat.jpg');
     }
 
-    function loadImageFromSrc(src) {
-      const img = new Image();
-      img.onload = () => {
+    // --- 大圖防爆記憶體安全降採樣 ---
+    function safeProcessImage(img) {
+      const maxDim = 2800; // 最適長邊限制，兼顧 300 DPI 沖印細節與低階手機記憶體安全
+      if (img.width > maxDim || img.height > maxDim) {
+        const scale = maxDim / Math.max(img.width, img.height);
+        const w = Math.round(img.width * scale);
+        const h = Math.round(img.height * scale);
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = w;
+        tempCanvas.height = h;
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCtx.imageSmoothingEnabled = true;
+        tempCtx.imageSmoothingQuality = 'high';
+        tempCtx.drawImage(img, 0, 0, w, h);
+
+        const downscaledImg = new Image();
+        downscaledImg.onload = () => {
+          state.image = downscaledImg;
+          state.imageLoaded = true;
+          resetTransform();
+          renderAll();
+          showToast('⚡ 已為超大照片自動完成效能最佳化', 'info');
+        };
+        downscaledImg.src = tempCanvas.toDataURL('image/jpeg', 0.95);
+      } else {
         state.image = img;
         state.imageLoaded = true;
         resetTransform();
         renderAll();
-      };
+      }
+    }
+
+    function loadImageFromSrc(src) {
+      const img = new Image();
+      img.onload = () => safeProcessImage(img);
+      img.onerror = () => showToast('載入圖片失敗，請檢查檔案格式', 'error');
       img.src = src;
+    }
+
+    // --- 檔案輸入檢核 ---
+    function handleFileInput(file) {
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        showToast('⚠️ 請選擇常見圖片檔案（JPG、PNG 或 WebP）', 'warn');
+        return;
+      }
+      if (file.size > 25 * 1024 * 1024) {
+        showToast('⚠️ 檔案超過 25MB，請選擇較小的照片', 'warn');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => loadImageFromSrc(e.target.result);
+      reader.onerror = () => showToast('讀取檔案失敗，請重試', 'error');
+      reader.readAsDataURL(file);
     }
 
     // --- 調整與變形重置 ---
@@ -677,12 +752,42 @@
         }
       }
 
-      // 相紙邊緣標記
+      // 相紙邊緣標記與 20mm (2公分) 實體列印校對尺標
       printCtx.save();
       printCtx.fillStyle = '#94a3b8';
-      printCtx.font = '16px sans-serif';
+      printCtx.font = '15px sans-serif';
       printCtx.textAlign = 'right';
-      printCtx.fillText('IDoPhoto • 4×6 吋 (10.16×15.24cm) 300 DPI • 建議立可得/ibon選「符合相紙不留白」', pw - 40, ph - 20);
+      printCtx.fillText('IDoPhoto • 4×6 吋 (10.16×15.24cm) 300 DPI • 建議立可得/ibon選「符合相紙不留白」', pw - 40, ph - 22);
+
+      // 左下角：實體 20mm (2公分) 列印校對尺標 (300 DPI: 20mm ≈ 236.2px)
+      const scaleX = 50;
+      const scaleY = ph - 28;
+      const len20mm = 20 * MM_TO_PX;
+      const len10mm = 10 * MM_TO_PX;
+
+      printCtx.strokeStyle = '#64748b';
+      printCtx.lineWidth = 1.5;
+      printCtx.beginPath();
+      printCtx.moveTo(scaleX, scaleY);
+      printCtx.lineTo(scaleX + len20mm, scaleY);
+      printCtx.moveTo(scaleX, scaleY - 5);
+      printCtx.lineTo(scaleX, scaleY + 5);
+      printCtx.moveTo(scaleX + len10mm, scaleY - 3);
+      printCtx.lineTo(scaleX + len10mm, scaleY + 3);
+      printCtx.moveTo(scaleX + len20mm, scaleY - 5);
+      printCtx.lineTo(scaleX + len20mm, scaleY + 5);
+      printCtx.stroke();
+
+      printCtx.fillStyle = '#64748b';
+      printCtx.font = '11px sans-serif';
+      printCtx.textAlign = 'left';
+      printCtx.fillText('0', scaleX - 3, scaleY - 8);
+      printCtx.fillText('10mm', scaleX + len10mm - 12, scaleY - 8);
+      printCtx.fillText('20mm', scaleX + len20mm - 12, scaleY - 8);
+
+      printCtx.fillStyle = '#94a3b8';
+      printCtx.font = '13px sans-serif';
+      printCtx.fillText('實體校對標尺 (印出後量測若剛好 2 公分代表尺寸無失真)', scaleX + len20mm + 15, scaleY + 4);
       printCtx.restore();
     }
 
@@ -909,27 +1014,29 @@
       renderAll();
     });
 
+    // 上傳檔案處理
     imageUpload.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => loadImageFromSrc(event.target.result);
-        reader.readAsDataURL(file);
-      }
+      handleFileInput(e.target.files[0]);
+      e.target.value = ''; // 允許重複選取相同檔案
     });
 
     // 手機相機自拍上傳
     const cameraUpload = document.getElementById('cameraUpload');
     if (cameraUpload) {
       cameraUpload.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (event) => loadImageFromSrc(event.target.result);
-          reader.readAsDataURL(file);
-        }
+        handleFileInput(e.target.files[0]);
+        e.target.value = '';
       });
     }
+
+    // 拖曳上傳支援
+    cropViewport.addEventListener('dragover', (e) => e.preventDefault());
+    cropViewport.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleFileInput(e.dataTransfer.files[0]);
+      }
+    });
 
     // 手機版分頁切換控制
     const tabEdit = document.getElementById('tabEdit');
@@ -992,19 +1099,50 @@
       if (e.target === infoModal) closeModal();
     });
 
-    // 下載
+    // --- 注入真實 300 DPI 實體物理標記至 JPEG (JFIF Header) ---
+    function exportCanvasAs300DpiJpeg(canvas, quality = 0.95, dpi = 300) {
+      const dataUrl = canvas.toDataURL('image/jpeg', quality);
+      const binStr = atob(dataUrl.split(',')[1]);
+      const len = binStr.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binStr.charCodeAt(i);
+      }
+      // 檢查 SOI (FF D8) 與 APP0 (FF E0) 標記
+      if (bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF && bytes[3] === 0xE0) {
+        // 檢查 "JFIF\0" 標識 (4A 46 49 46 00)
+        if (bytes[6] === 0x4A && bytes[7] === 0x46 && bytes[8] === 0x49 && bytes[9] === 0x46 && bytes[10] === 0x00) {
+          bytes[13] = 1; // 密度單位: 1 = Dots Per Inch (DPI)
+          bytes[14] = (dpi >> 8) & 0xFF; // X軸 DPI 高位元組
+          bytes[15] = dpi & 0xFF;        // X軸 DPI 低位元組 (0x012C -> 300)
+          bytes[16] = (dpi >> 8) & 0xFF; // Y軸 DPI 高位元組
+          bytes[17] = dpi & 0xFF;        // Y軸 DPI 低位元組 (0x012C -> 300)
+        }
+      }
+      return new Blob([bytes], { type: 'image/jpeg' });
+    }
+
+    // --- 下載處理 (帶真 300 DPI 標籤) ---
     btnDownloadSingle.addEventListener('click', () => {
+      const blob = exportCanvasAs300DpiJpeg(cropCanvas, 0.95, 300);
+      const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.download = `IDoPhoto_Single_${state.specKey}_${Date.now()}.jpg`;
-      link.href = cropCanvas.toDataURL('image/jpeg', 0.95);
+      link.download = `IDoPhoto_Single_${state.specKey}_300DPI_${Date.now()}.jpg`;
+      link.href = url;
       link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast('✅ 已下載單張電子檔（內嵌 300 DPI 規格標記）', 'info');
     });
 
     btnDownloadPrint.addEventListener('click', () => {
+      const blob = exportCanvasAs300DpiJpeg(printCanvas, 0.95, 300);
+      const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.download = `IDoPhoto_Print_4x6_${selectLayout.value}_${Date.now()}.jpg`;
-      link.href = printCanvas.toDataURL('image/jpeg', 0.95);
+      link.download = `IDoPhoto_Print_4x6_${selectLayout.value}_300DPI_${Date.now()}.jpg`;
+      link.href = url;
       link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast('✅ 已下載 4×6 沖印圖（內嵌 300 DPI 規格標記）', 'info');
     });
 
     // 初始化
