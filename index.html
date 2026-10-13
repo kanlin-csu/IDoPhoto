@@ -576,7 +576,7 @@
           renderAll();
           showToast('⚡ 已為超大照片自動完成效能最佳化', 'info');
         };
-        downscaledImg.src = tempCanvas.toDataURL('image/jpeg', 0.95);
+        downscaledImg.src = tempCanvas.toDataURL('image/png');
       } else {
         state.image = img;
         state.imageLoaded = true;
