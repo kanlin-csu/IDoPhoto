@@ -232,10 +232,10 @@
           <button id="btnAiCutout" class="w-full py-2 px-3 bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-600 hover:from-purple-600 hover:to-blue-500 text-white font-medium rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md shadow-indigo-900/30 transition">
             <span class="text-sm">🪄</span>
             <span>純本機 AI 人像去背</span>
-            <span class="text-[10px] bg-white/20 text-blue-100 px-1.5 py-0.5 rounded-full font-normal">輕量 5MB</span>
+            <span class="text-[10px] bg-white/20 text-purple-200 px-1.5 py-0.5 rounded-full font-normal">實驗選用</span>
           </button>
-          <div class="text-[10px] text-slate-400 text-center">
-            💡 專為真人證件照訓練，手機/電腦皆適用
+          <div class="text-[10px] text-slate-400 text-center leading-tight">
+            💡 追求極致髮絲推薦用「手機相簿長按去背」後直接上傳
           </div>
         </div>
 
@@ -414,28 +414,32 @@
     <div class="bg-slate-850 border border-slate-700 rounded-2xl max-w-md w-full p-5 shadow-2xl relative text-slate-200">
       <div class="flex items-center gap-2.5 text-purple-400 font-bold text-base border-b border-slate-700 pb-3 mb-3.5">
         <span class="text-xl">🪄</span>
-        <span>純本機 AI 人像去背（選用功能）</span>
+        <span>純本機 AI 人像去背（實驗選用）</span>
       </div>
 
       <div class="text-xs text-slate-300 space-y-3 leading-relaxed">
-        <div class="bg-purple-950/40 border border-purple-800/60 p-3 rounded-xl space-y-1.5 text-purple-200">
-          <div class="font-bold flex items-center gap-1.5 text-purple-300">
-            <span>📶 輕量邊緣端 AI (僅約 5 MB，手機秒開)</span>
+        <!-- 手機原生長按去背 (強烈推薦) -->
+        <div class="bg-blue-950/40 border border-blue-700/60 p-3 rounded-xl space-y-1.5 text-blue-200">
+          <div class="font-bold flex items-center gap-1.5 text-blue-300">
+            <span>📱 強烈推薦：手機相簿「長按 1 秒去背」（效果最佳）</span>
           </div>
-          <p class="text-[11px] text-purple-200/80 leading-normal">
-            採用 Google MediaPipe 輕量 AI 人像分割引擎，<b>100% 在您手機/電腦瀏覽器內部運算（照片絕不上傳）</b>。相較傳統模型需下載 40MB，本模型僅約 <b>5 MB</b>，專為手機與 Android/Pixel 最佳化，載入極速且不耗流量。
+          <p class="text-[11px] text-blue-200/90 leading-normal">
+            手機晶片硬體神經網路是目前髮絲處理最極致的方案（0 流量、黑髮不發灰）：
           </p>
+          <ul class="list-disc list-inside space-y-0.5 text-[11px] text-blue-300/80">
+            <li><b>iPhone (iOS 16+)</b>：打開相簿照片 ➜ 長按人物 1 秒 ➜「分享 ➜ 儲存影像」➜ 上傳至本站。</li>
+            <li><b>Android (Pixel / 三星)</b>：相簿照片長按主體直接儲存為去背圖。</li>
+          </ul>
         </div>
 
-        <div class="bg-slate-900/70 border border-slate-750 p-3 rounded-xl space-y-1.5">
-          <div class="font-bold text-slate-200 flex items-center gap-1.5">
-            <span>💡 使用建議與提醒：</span>
+        <!-- 網頁本機端 AI 說明 (方案 A 演算法) -->
+        <div class="bg-purple-950/30 border border-purple-800/50 p-3 rounded-xl space-y-1 text-purple-200">
+          <div class="font-bold flex items-center gap-1.5 text-purple-300">
+            <span>🪄 網頁本機 AI 引擎 (Google MediaPipe 5MB)</span>
           </div>
-          <ul class="list-disc list-inside space-y-1 text-[11px] text-slate-400">
-            <li><b>專為真人證件大頭照訓練</b>：特別強化人臉、肩膀與衣領邊緣，自動合成證件照規定之純白底（#FFFFFF）。</li>
-            <li><b>手機原生功能依然最推薦</b>：Pixel/三星/iPhone 手機相簿長按 1 秒去背仍是最省電最快的方案。</li>
-            <li><b>寵物照片說明</b>：本模型針對人體訓練，若是示範貓咪或寵物，建議自行去背後上傳。</li>
-          </ul>
+          <p class="text-[11px] text-purple-200/80 leading-normal">
+            100% 於您本機端執行（照片不外傳）。本版本已導入<b>「髮色防發灰硬化演算」</b>，收窄半透明過渡帶以減緩黑髮泛灰，供免切換 App 時快速預覽使用。
+          </p>
         </div>
       </div>
 
@@ -453,10 +457,10 @@
       <!-- 按鈕區 -->
       <div id="aiModalButtons" class="mt-4 pt-3 border-t border-slate-750 flex items-center justify-end gap-2.5">
         <button id="btnCancelAi" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-xl border border-slate-700 transition">
-          取消
+          取消 (用手機相簿去背)
         </button>
         <button id="btnConfirmAi" class="text-xs bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-4 py-2 rounded-xl shadow-lg transition flex items-center gap-1.5">
-          <span>開始 AI 人像去背</span>
+          <span>啟動本機 AI 去背</span>
         </button>
       </div>
     </div>
@@ -1249,22 +1253,60 @@
               clearTimeout(timeoutId);
 
               try {
-                const outCanvas = document.createElement('canvas');
                 const w = results.image.width;
                 const h = results.image.height;
+
+                // 1. 將 MediaPipe 原始遮罩繪製到離屏遮罩畫布
+                const maskCanvas = document.createElement('canvas');
+                maskCanvas.width = w;
+                maskCanvas.height = h;
+                const maskCtx = maskCanvas.getContext('2d');
+                maskCtx.drawImage(results.segmentationMask, 0, 0, w, h);
+
+                // 2. 方案 A：非線性階調硬化演算（消除半透明過渡帶，徹底防止黑髮被純白底稀釋成灰）
+                const maskImgData = maskCtx.getImageData(0, 0, w, h);
+                const d = maskImgData.data;
+                for (let i = 0; i < d.length; i += 4) {
+                  // 取出遮罩置信度 (相容 Red/Alpha 通道格式)
+                  const val = Math.max(d[i], d[i + 1], d[i + 2], d[i + 3]) / 255;
+
+                  let alpha;
+                  if (val < 0.28) {
+                    // 徹底切除背景雜色光暈
+                    alpha = 0;
+                  } else if (val > 0.48) {
+                    // 髮絲與主體迅速拉滿至 100% 不透明，保持飽滿真實髮色，絕不發灰！
+                    alpha = 255;
+                  } else {
+                    // 0.28 ~ 0.48 間保留極窄的平滑羽化，避免邊緣馬賽克鋸齒
+                    const t = (val - 0.28) / 0.20;
+                    const smooth = t * t * (3 - 2 * t);
+                    alpha = Math.round(smooth * 255);
+                  }
+
+                  // 輸出為純 Alpha 遮罩
+                  d[i] = 0;
+                  d[i + 1] = 0;
+                  d[i + 2] = 0;
+                  d[i + 3] = alpha;
+                }
+                maskCtx.putImageData(maskImgData, 0, 0);
+
+                // 3. 輸出畫布合成
+                const outCanvas = document.createElement('canvas');
                 outCanvas.width = w;
                 outCanvas.height = h;
                 const outCtx = outCanvas.getContext('2d');
 
-                // 1. 繪製 MediaPipe 產生的人像分割遮罩
                 outCtx.save();
-                outCtx.drawImage(results.segmentationMask, 0, 0, w, h);
+                // 繪製硬化後的防灰遮罩
+                outCtx.drawImage(maskCanvas, 0, 0, w, h);
 
-                // 2. source-in: 只保留遮罩內的人物區域
+                // source-in: 僅保留遮罩內的人物區域
                 outCtx.globalCompositeOperation = 'source-in';
                 outCtx.drawImage(results.image, 0, 0, w, h);
 
-                // 3. destination-over: 背景填補標準證件純白底 (#ffffff)
+                // destination-over: 背景填補標準證件純白底 (#ffffff)
                 outCtx.globalCompositeOperation = 'destination-over';
                 outCtx.fillStyle = '#ffffff';
                 outCtx.fillRect(0, 0, w, h);
