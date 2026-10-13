@@ -1,4 +1,4 @@
-const CACHE_NAME = 'idophoto-cache-v1.0';
+const CACHE_NAME = 'idophoto-cache-v1.1';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -7,7 +7,8 @@ const STATIC_ASSETS = [
   './icon-192.png',
   './icon-512.png',
   './icon-maskable-512.png',
-  './apple-touch-icon.png'
+  './apple-touch-icon.png',
+  './og-image.png'
 ];
 
 // 安裝 Service Worker 並快取核心資源

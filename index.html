@@ -3,7 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IDoPhoto - 證件照/大頭照排版產生器</title>
+  <title>IDoPhoto - 免費線上證件照/大頭照排版產生器 | 4x6 超商沖印・護照身分證規格</title>
+
+  <!-- SEO 基本中繼資料 -->
+  <meta name="description" content="免費免安裝的線上證件照排版工具！一鍵將 1 吋、2 吋護照身分證照片排版為 4x6 規格，直接至 7-11 ibon 或全家沖印只要 6 元。100% 純前端本機運算，不傳伺服器保護隱私。">
+  <meta name="keywords" content="證件照排版,大頭照排版,4x6沖印,護照照片規格,身分證照片,超商印證件照,7-11 ibon,全家立可得,免費證件照,PhotoCap,1吋照片,2吋照片,PWA">
+  <meta name="author" content="IDoPhoto">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://idophoto.kanlin.org/">
+
+  <!-- 社群分享 Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="IDoPhoto - 免費線上證件照/大頭照排版產生器">
+  <meta property="og:description" content="免安裝、純本機隱私保護！一鍵將 1 吋、2 吋證件照排版為 4x6 規格，超商沖印只要 6 元。">
+  <meta property="og:url" content="https://idophoto.kanlin.org/">
+  <meta property="og:image" content="https://idophoto.kanlin.org/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="IDoPhoto">
+  <meta property="og:locale" content="zh_TW">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="IDoPhoto - 免費線上證件照/大頭照排版產生器">
+  <meta name="twitter:description" content="免安裝、純本機隱私保護！一鍵將 1 吋、2 吋證件照排版為 4x6 規格，超商沖印只要 6 元。">
+  <meta name="twitter:image" content="https://idophoto.kanlin.org/og-image.png">
 
   <!-- PWA 漸進式網頁應用支援 -->
   <link rel="manifest" href="manifest.json">
@@ -14,6 +38,117 @@
   <meta name="apple-mobile-web-app-title" content="IDoPhoto">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+
+  <!-- Schema.org 結構化資料 (JSON-LD) for Google & AI 搜尋引擎 (GEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://idophoto.kanlin.org/#webapp",
+        "name": "IDoPhoto",
+        "alternateName": ["IDoPhoto 證件照排版產生器", "PhotoCap Web", "IDoPhoto 證件照沖印工具"],
+        "url": "https://idophoto.kanlin.org/",
+        "description": "免費免安裝的線上證件照/大頭照排版工具。100% 純瀏覽器本機運算保護個人隱私，內嵌 300 DPI 規格與 PhotoCap 經典外交部護照輔助線，支援 4x6 超商沖印排版。",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "All",
+        "inLanguage": "zh-TW",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "TWD"
+        },
+        "featureList": [
+          "100% 純前端本機運算，不傳送任何照片至伺服器，嚴格保護個人生物隱私",
+          "內嵌 300 DPI 實體規格，支援 4x6 超商相片沖印排版（單張 6 元）",
+          "外交部護照 3.2cm - 3.6cm 頭部規範比例輔助線",
+          "支援 2 吋護照身分證、1 吋駕照、經典混搭、5x5 美簽等多種規格",
+          "支援 PWA 離線安裝，飛航模式亦可順暢使用"
+        ]
+      },
+      {
+        "@type": "HowTo",
+        "@id": "https://idophoto.kanlin.org/#howto",
+        "name": "如何自己排版並到超商沖印 4×6 證件照（只要 6 元）",
+        "description": "使用 IDoPhoto 線上工具將個人大頭照排版為 4×6 規格，並至超商機台列印的完整 4 步驟指南。",
+        "totalTime": "PT3M",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "步驟一：載入或上傳照片",
+            "text": "在 IDoPhoto 點選「選擇照片」或直接拖曳手機/相機拍攝之正面清晰白底半身照。若有透明圖檔亦會自動填補純白底。",
+            "url": "https://idophoto.kanlin.org/"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "步驟二：依規範對齊輔助線",
+            "text": "拖曳、縮放並旋轉照片，確保頭頂進入綠色輔助帶（符合外交部 3.2~3.6cm 比例），下巴與雙眼對齊基準線。",
+            "url": "https://idophoto.kanlin.org/"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "步驟三：挑選 4×6 排版組合",
+            "text": "依需求選擇「2 吋 × 8 張」、「1 吋 × 10 張」或「經典混搭（2 吋 4 張 + 1 吋 4 張）」，系統自動加上精準十字裁切線。",
+            "url": "https://idophoto.kanlin.org/"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "步驟四：下載 300 DPI 沖印檔至超商列印",
+            "text": "點選「下載 4×6 沖印圖」取得 1800×1200 像素高畫質圖檔，上傳至 7-11 ibon 或全家立可得選擇「4×6 相片沖印」即可印出。",
+            "url": "https://idophoto.kanlin.org/"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://idophoto.kanlin.org/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "到 7-11 或全家印證件照要選什麼規格？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "請在超商機台（7-11 ibon 或全家立可得）選擇「4×6 吋相片沖印」（非一般 A4 文件普通紙列印）。一張 4×6 相片沖印只要 6 至 10 元，沖印出來後依照格線裁切即可得到多張標準證件照。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "外交部護照與身分證對照片尺寸有什麼嚴格規定？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "台灣護照與身分證規定為 2 吋相片（寬 3.5cm、高 4.5cm），最關鍵的規定是「自頭頂至下巴長度必須介於 3.2cm 至 3.6cm 之間（佔相片高約 70%~80%）」。IDoPhoto 內建半透明頭頂規範帶，只要將頭頂落於範圍內即符合外交部送件要求。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "使用 IDoPhoto 排版，我的照片會被上傳到伺服器嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "完全不會！IDoPhoto 為 100% 純前端技術（Client-side Only）運作，照片縮放、旋轉與排版拼接全部在您的裝置本機瀏覽器記憶體中運算，絕無任何照片會傳送到後端或第三方機構，關閉分頁即銷毀資料，徹底保護隱私。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "IDoPhoto 支援手機離線使用嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "支援！IDoPhoto 已支援 PWA（Progressive Web App）標準。在 Android Chrome 可點擊頂部「安裝 App」一鍵加至桌面；在 iPhone Safari 可透過「分享 -> 加入主畫面」。安裝後就算在飛航模式或無網路環境，仍可 100% 正常開啟並匯出照片。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "照片背景不是純白色怎麼辦？可以去背嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "證件照必須為純白背景。您可以利用 iPhone / Samsung / Pixel 手機相簿的原生「長按 1 秒去背」功能，或是使用 Canva 免費線上照片去背。產生的透明背景 PNG 上傳至 IDoPhoto 後，系統會自動無縫填補標準 #FFFFFF 純白底。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -353,6 +488,122 @@
         </ul>
       </div>
 
+      <!-- 規格指南與常見問答 SEO / GEO 結構化內容 -->
+      <section id="seoKnowledgeSection" class="bg-slate-800/60 rounded-xl p-4 border border-slate-700/80 space-y-4 text-xs text-slate-300">
+        <div>
+          <h2 class="text-sm font-bold text-slate-100 flex items-center gap-1.5 mb-1.5">
+            <span>📋</span>
+            <span>台灣常見證件照規格尺寸指南</span>
+          </h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-[11px] border-collapse">
+              <thead>
+                <tr class="border-b border-slate-700 text-slate-400">
+                  <th class="py-1 px-1.5">證件類型</th>
+                  <th class="py-1 px-1.5">實體尺寸</th>
+                  <th class="py-1 px-1.5">300 DPI 像素</th>
+                  <th class="py-1 px-1.5">關鍵規範</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-750 text-slate-300">
+                <tr>
+                  <td class="py-1 px-1.5 font-medium text-blue-300">2 吋 護照 / 身分證</td>
+                  <td class="py-1 px-1.5">35 × 45 mm</td>
+                  <td class="py-1 px-1.5">413 × 531 px</td>
+                  <td class="py-1 px-1.5 text-amber-300">頭頂至下巴 3.2~3.6cm</td>
+                </tr>
+                <tr>
+                  <td class="py-1 px-1.5 font-medium text-blue-300">2 吋 健保卡 / 半身</td>
+                  <td class="py-1 px-1.5">35 × 45 mm</td>
+                  <td class="py-1 px-1.5">413 × 531 px</td>
+                  <td class="py-1 px-1.5">頭頂至下巴約 2.5~3.0cm</td>
+                </tr>
+                <tr>
+                  <td class="py-1 px-1.5 font-medium text-blue-300">1 吋 駕照 / 證照</td>
+                  <td class="py-1 px-1.5">28 × 35 mm</td>
+                  <td class="py-1 px-1.5">331 × 413 px</td>
+                  <td class="py-1 px-1.5">五官清晰露耳露眉</td>
+                </tr>
+                <tr>
+                  <td class="py-1 px-1.5 font-medium text-blue-300">美簽 / 印度簽證 (2×2 吋)</td>
+                  <td class="py-1 px-1.5">50 × 50 mm</td>
+                  <td class="py-1 px-1.5">591 × 591 px</td>
+                  <td class="py-1 px-1.5">正方形頭部佔 50%~69%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="border-t border-slate-750 pt-3">
+          <h2 class="text-sm font-bold text-slate-100 flex items-center gap-1.5 mb-2">
+            <span>💡</span>
+            <span>4×6 超商沖印 6 元省錢攻略 (7-11 ibon & 全家立可得)</span>
+          </h2>
+          <p class="text-[11px] text-slate-300 leading-relaxed mb-2">
+            傳統照相館一組證件照動輒 150～350 元。使用 <b>IDoPhoto</b> 排版完成後，只要把產生的 4×6 圖片存在手機或隨身碟，到 7-11 或全家便利商店機台選擇<b>「4×6 相片沖印」</b>（生活照相紙方案），單張僅需 <b>6～10 元</b>即可一次獲得 8 至 10 張高品質實體證件照！
+          </p>
+        </div>
+
+        <div class="border-t border-slate-750 pt-3 space-y-2">
+          <h2 class="text-sm font-bold text-slate-100 flex items-center gap-1.5 mb-1.5">
+            <span>❓</span>
+            <span>常見問題解答 (FAQ)</span>
+          </h2>
+          
+          <details class="bg-slate-900/60 rounded-lg p-2.5 border border-slate-750/70 group">
+            <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
+              <span>到 7-11 或全家印證件照，機台要選什麼選項？</span>
+              <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="mt-2 text-[11px] text-slate-300 leading-relaxed pl-1 border-l-2 border-blue-500">
+              請務必在機台選擇<b>「4×6 吋相片沖印」</b>（生活照相紙列印），切勿點選證件照專案；設定時請確認<b>滿版/不裁切</b>，印出後沿十字裁切線剪下即可。
+            </p>
+          </details>
+
+          <details class="bg-slate-900/60 rounded-lg p-2.5 border border-slate-750/70 group">
+            <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
+              <span>為什麼護照照片對頭頂比例這麼嚴格？</span>
+              <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="mt-2 text-[11px] text-slate-300 leading-relaxed pl-1 border-l-2 border-blue-500">
+              依外交部領事事務局規定，護照與身分證頭頂至下巴必須介於 3.2cm 至 3.6cm 之間。IDoPhoto 特製了綠色半透明頭頂輔助帶，只要將照片頭頂調至框內，下巴平視對齊，即可保證審核通過不被退件。
+            </p>
+          </details>
+
+          <details class="bg-slate-900/60 rounded-lg p-2.5 border border-slate-750/70 group">
+            <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
+              <span>我的照片會被上傳到後台伺服器嗎？</span>
+              <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="mt-2 text-[11px] text-slate-300 leading-relaxed pl-1 border-l-2 border-blue-500">
+              絕不上傳！IDoPhoto 為 100% 純前端靜態工具，所有裁切與高解析度運算均在您本機的瀏覽器記憶體中完成，關閉網頁即自動銷毀，絕無生物隱私外洩風險。
+            </p>
+          </details>
+
+          <details class="bg-slate-900/60 rounded-lg p-2.5 border border-slate-750/70 group">
+            <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
+              <span>需要手機 App 嗎？如何安裝到手機桌面？</span>
+              <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="mt-2 text-[11px] text-slate-300 leading-relaxed pl-1 border-l-2 border-blue-500">
+              IDoPhoto 支援 PWA 規範。Android 手機可點擊網頁頂部「安裝 App」按鈕；iPhone Safari 可點擊底部分享圖示選擇「加入主畫面」。安裝後免連網或飛航模式亦可順暢使用。
+            </p>
+          </details>
+
+          <details class="bg-slate-900/60 rounded-lg p-2.5 border border-slate-750/70 group">
+            <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
+              <span>照片背景不是白色的話怎麼去背？</span>
+              <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="mt-2 text-[11px] text-slate-300 leading-relaxed pl-1 border-l-2 border-blue-500">
+              可利用 iPhone / Pixel / 三星手機相簿的「長按 1 秒去背」，或使用 Canva 免費線上照片去背。產生的透明圖檔上傳後，IDoPhoto 會自動套用標準證件純白底（#FFFFFF）。
+            </p>
+          </details>
+        </div>
+      </section>
+
+
     </section>
 
   </main>
@@ -366,6 +617,7 @@
       </span>
       <button id="btnPrivacyModal" class="hover:text-blue-400 underline transition text-slate-300">隱私聲明</button>
       <button id="btnLicenseModal" class="hover:text-blue-400 underline transition text-slate-300">MIT 開源授權</button>
+      <a href="#seoKnowledgeSection" class="hover:text-blue-400 underline transition text-slate-300">規格指南與 FAQ</a>
     </div>
     <div class="flex items-center gap-3">
       <span>Developed by <a href="https://github.com/kanlin-csu" target="_blank" class="text-slate-300 hover:text-white transition font-medium">kanlin</a></span>

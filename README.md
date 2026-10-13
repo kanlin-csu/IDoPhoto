@@ -55,6 +55,13 @@
    - 完整支援 Progressive Web App，支援點擊「安裝 App」或「加入主畫面」。
    - 具備 Service Worker 離線快取，全螢幕獨立視窗運作，體驗比擬原生 App。
 
+9. **SEO 與 AI 爬蟲最佳化 (GEO / LLM SEO)**
+   - 內嵌完整 Schema.org JSON-LD 結構化資料 (`WebApplication`, `HowTo`, `FAQPage`)，利於 Google 與各大 AI 搜尋引擎（ChatGPT, Perplexity, Copilot）精確檢索引用。
+   - 支援 Open Graph 1200×630 品牌社群預覽卡片與 Twitter Cards。
+   - 提供標準 `robots.txt`、`sitemap.xml`，以及專為大語言模型設計的 `llms.txt`。
+   - 網頁內建語意化常見證件規格速查表與常見問答 (FAQ)。
+
+
 
 ---
 

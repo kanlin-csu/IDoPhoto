@@ -158,4 +158,17 @@
   * 頂部導覽列整合「安裝 App」動態按鈕（`#btnInstallPwa`），攔截並監聽瀏覽器 `beforeinstallprompt` 事件，使用者一鍵即可呼叫瀏覽器原生安裝對話框。
   * 針對不支援 `beforeinstallprompt` 的 iOS Safari，完整支援 Apple 原生 Web App Meta 標籤，相容於「分享按鈕 -> 加入主畫面」。
 
-
+### 13. SEO 與生成式 AI 搜尋最佳化 (GEO / LLM SEO)
+* **社群與搜尋中繼標籤 (Meta TDK & Open Graph)**：
+  * 注入標準 Meta Description、Keywords、Author、Robots、Canonical 網址。
+  * 繪製生成 1200×630 高解析度 Open Graph 與 Twitter Card 品牌預覽圖（`og-image.png`），LINE、Facebook 分享自動顯示質感卡片。
+* **Schema.org JSON-LD 三重結構化資料**：
+  * `WebApplication`：宣告免費、純前端本機運算（Client-side Only）與護照/超商沖印排版特色。
+  * `HowTo`：定義 4 步驟排版與 7-11 / 全家 4×6 沖印實體流程。
+  * `FAQPage`：涵蓋超商沖印選型、外交部 3.2~3.6cm 規範、生物隱私保障、PWA 離線安裝、照片去背技巧等 5 大常見問答。
+* **爬蟲指引與 AI 友好標準**：
+  * `robots.txt`：開放 Googlebot、Bingbot，並明確歡迎 GPTBot、ChatGPT-User、PerplexityBot、ClaudeBot 等 AI 檢索代理人。
+  * `sitemap.xml`：提供標準 XML 網站地圖。
+  * `llms.txt`：依據新興 LLM 文字標準，提供低 Token 純文字說明與常見問答快速指引。
+* **頁面語意化規格速查與 FAQ 手風琴**：
+  * 於 `#panelPrint` 下方加入常用證件尺寸速查表、超商省錢攻略，以及語意化 `<details><summary>` 常見問答區，豐富長尾關鍵字，便於 Google 與 AI 引用。
