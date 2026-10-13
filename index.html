@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDoPhoto - 證件照/大頭照排版產生器</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* 輔助樣式 */
+    .checkerboard {
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      background-image: 
+        linear-gradient(45deg, #f0f0f0 25%, transparent 25%),
+        linear-gradient(-45deg, #f0f0f0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #f0f0f0 75%),
+        linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+    }
+    input[type=range] {
+      accent-color: #2563eb;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
+
+  <!-- Header -->
+  <header class="bg-slate-800 border-b border-slate-700 px-6 py-3.5 flex items-center justify-between sticky top-0 z-30 shadow-md">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 text-white font-extrabold text-base tracking-tight">
+        IDo
+      </div>
+      <div>
+        <h1 class="text-lg font-bold flex items-center gap-2 text-white">
+          IDoPhoto
+          <span class="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 font-medium border border-blue-500/30">證件照排版專用版</span>
+        </h1>
+        <p class="text-xs text-slate-400">標準規範對齊輔助線 • 4x6 超商沖印排版 • 300 DPI 高畫質純前端輸出</p>
+      </div>
+    </div>
+
+    <!-- Actions in header -->
+    <div class="flex items-center gap-3">
+      <button id="btnLoadSample" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-600 transition flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        載入範例照片
+      </button>
+
+      <label for="imageUpload" class="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-lg font-medium shadow-md shadow-blue-600/30 cursor-pointer transition flex items-center gap-1.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+        上傳我的照片
+      </label>
+      <input type="file" id="imageUpload" accept="image/*" class="hidden">
+    </div>
+  </header>
+
+  <!-- Main Content Grid -->
+  <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-0 overflow-hidden">
+    
+    <!-- LEFT PANEL: 編輯與裁切調整 (5 cols) -->
+    <section class="lg:col-span-5 bg-slate-850 p-4 border-r border-slate-800 flex flex-col gap-4 overflow-y-auto max-h-[calc(100vh-65px)]">
+      
+      <!-- 規格選擇 -->
+      <div class="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700/80 shadow-sm">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-blue-500"></span> 步驟 1: 選擇證件規格
+          </span>
+          <span id="specInfoBadge" class="text-[11px] bg-slate-700 text-blue-300 px-2 py-0.5 rounded border border-slate-600">3.5 × 4.5 cm</span>
+        </div>
+        
+        <div class="grid grid-cols-3 gap-2">
+          <button class="spec-btn active text-left p-2.5 rounded-lg border border-blue-500 bg-blue-500/10 text-white transition hover:border-blue-400" data-spec="passport">
+            <div class="font-bold text-xs">2 吋 護照/身分證</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">頭頂3.2~3.6cm規範</div>
+          </button>
+          <button class="spec-btn text-left p-2.5 rounded-lg border border-slate-700 bg-slate-800/60 text-slate-300 transition hover:border-slate-500 hover:text-white" data-spec="two_inch_half">
+            <div class="font-bold text-xs">2 吋 半身/健保卡</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">履歷、學生證常用</div>
+          </button>
+          <button class="spec-btn text-left p-2.5 rounded-lg border border-slate-700 bg-slate-800/60 text-slate-300 transition hover:border-slate-500 hover:text-white" data-spec="one_inch">
+            <div class="font-bold text-xs">1 吋 駕照/證照</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">2.8 × 3.5 cm</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- 裁切互動區 (Crop Workspace) -->
+      <div class="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700/80 flex flex-col items-center shadow-sm">
+        <div class="w-full flex items-center justify-between mb-2">
+          <span class="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 步驟 2: 臉部定位與調整
+          </span>
+          <div class="flex items-center gap-2">
+            <label class="text-[11px] text-slate-300 flex items-center gap-1 cursor-pointer select-none">
+              <input type="checkbox" id="chkGuide" checked class="rounded bg-slate-700 border-slate-600 text-blue-600 focus:ring-0">
+              IDoPhoto 規範輔助線
+            </label>
+            <button id="btnResetTransform" class="text-[11px] text-slate-400 hover:text-white underline">重置位置</button>
+          </div>
+        </div>
+
+        <!-- 裁切視窗容器 -->
+        <div class="relative w-full flex items-center justify-center p-3 bg-slate-900/80 rounded-lg border border-slate-750 overflow-hidden select-none" id="cropContainerWrapper">
+          <div id="cropViewport" class="relative overflow-hidden shadow-2xl border-2 border-amber-400/80 cursor-grab active:cursor-grabbing bg-slate-950" style="width: 280px; height: 360px;">
+            <!-- 實際進行渲染的畫布 -->
+            <canvas id="cropCanvas" class="w-full h-full block"></canvas>
+            
+            <!-- IDoPhoto 經典疊加規範輔助線 (Overlay Guides) -->
+            <div id="guideOverlay" class="absolute inset-0 pointer-events-none transition-opacity duration-200">
+              <!-- 雙眼水平基準線 -->
+              <div class="absolute w-full border-t border-cyan-400/80 border-dashed" style="top: 38%;">
+                <span class="absolute right-1 -top-3.5 text-[9px] text-cyan-300 bg-slate-900/80 px-1 rounded">眼睛基準線</span>
+              </div>
+              
+              <!-- 頭頂規範帶 (Passport: 3.2~3.6cm 換算比例) -->
+              <div id="headGuideBand" class="absolute w-full bg-blue-500/10 border-t border-b border-blue-400/70" style="top: 8%; height: 14%;">
+                <span class="absolute left-1 top-0 text-[9px] text-blue-300 font-mono">頭頂範圍</span>
+              </div>
+
+              <!-- 下巴基準線 -->
+              <div id="chinGuideLine" class="absolute w-full border-b-2 border-emerald-400/90" style="bottom: 12%;">
+                <span class="absolute left-1 -top-3.5 text-[9px] text-emerald-300 bg-slate-900/80 px-1 rounded">下巴對齊線</span>
+              </div>
+
+              <!-- 臉部中心垂直線 -->
+              <div class="absolute h-full border-l border-amber-400/40 border-dashed" style="left: 50%;"></div>
+
+              <!-- 臉型參考橢圓 -->
+              <div id="faceOval" class="absolute rounded-[50%/60%] border-2 border-amber-400/60 pointer-events-none" style="left: 15%; right: 15%; top: 12%; bottom: 12%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full mt-2 text-center text-[11px] text-slate-400 flex items-center justify-center gap-3">
+          <span>💡 提示：在圖片上<b>拖曳可平移</b>，<b>滾輪可放大縮小</b></span>
+        </div>
+
+        <!-- 操控滑桿工具區 -->
+        <div class="w-full grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-slate-750">
+          <div>
+            <div class="flex justify-between text-xs text-slate-300 mb-1">
+              <span>放大縮小</span>
+              <span id="txtZoom" class="text-blue-400 font-mono">100%</span>
+            </div>
+            <input type="range" id="sliderZoom" min="0.3" max="3" step="0.01" value="1" class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs text-slate-300 mb-1">
+              <span>旋轉角度 (修正歪頭)</span>
+              <span id="txtRotate" class="text-blue-400 font-mono">0.0°</span>
+            </div>
+            <input type="range" id="sliderRotate" min="-25" max="25" step="0.5" value="0" class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer">
+          </div>
+        </div>
+
+        <!-- 影像微調區 (亮度、對比) -->
+        <div class="w-full grid grid-cols-2 gap-3 mt-2">
+          <div>
+            <div class="flex justify-between text-xs text-slate-300 mb-1">
+              <span>亮度補償</span>
+              <span id="txtBrightness" class="text-blue-400 font-mono">0</span>
+            </div>
+            <input type="range" id="sliderBrightness" min="-50" max="50" step="1" value="0" class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs text-slate-300 mb-1">
+              <span>對比度</span>
+              <span id="txtContrast" class="text-blue-400 font-mono">0</span>
+            </div>
+            <input type="range" id="sliderContrast" min="-50" max="50" step="1" value="0" class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 下載單張證件照區塊 -->
+      <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700 flex items-center justify-between">
+        <div>
+          <div class="text-xs font-semibold text-slate-200">線上申請專用電子檔</div>
+          <div class="text-[10px] text-slate-400">標準高解析度單張裁切檔 (可直接上傳外交部/系統)</div>
+        </div>
+        <button id="btnDownloadSingle" class="text-xs bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded-lg border border-slate-600 flex items-center gap-1.5 transition">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          下載單張電子檔
+        </button>
+      </div>
+
+    </section>
+
+    <!-- RIGHT PANEL: 4x6 相紙排版與列印預覽 (7 cols) -->
+    <section class="lg:col-span-7 bg-slate-900 p-4 flex flex-col gap-4 overflow-y-auto max-h-[calc(100vh-65px)]">
+      
+      <!-- 排版控制列 -->
+      <div class="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <div class="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-purple-500"></span> 步驟 3: 4x6 沖印相紙排版設定
+          </div>
+          <div class="text-[11px] text-slate-400 mt-0.5">全家立可得 / 7-11 ibon 沖印一張只需 4~6 元！</div>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <select id="selectLayout" class="bg-slate-900 border border-slate-600 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500 flex-1 sm:flex-none">
+            <option value="2inch_8">2 吋 × 8 張 (推薦)</option>
+            <option value="1inch_10">1 吋 × 10 張</option>
+            <option value="combo_2_1">經典混搭 (2吋×4 + 1吋×4)</option>
+          </select>
+
+          <button id="btnDownloadPrint" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-4 py-1.5 rounded-lg shadow-lg shadow-emerald-600/20 flex items-center gap-1.5 transition whitespace-nowrap">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+            下載 4x6 列印檔 (300 DPI)
+          </button>
+        </div>
+      </div>
+
+      <!-- 排版進階細項 (裁切線、留白邊) -->
+      <div class="flex flex-wrap items-center justify-between text-xs bg-slate-800/40 px-3 py-2 rounded-lg border border-slate-750 gap-2">
+        <div class="flex items-center gap-4">
+          <label class="flex items-center gap-1.5 cursor-pointer text-slate-300">
+            <input type="checkbox" id="chkCutLine" checked class="rounded bg-slate-700 border-slate-600 text-blue-600 focus:ring-0">
+            裁切輔助標記 (虛線與十字標)
+          </label>
+          <label class="flex items-center gap-1.5 cursor-pointer text-slate-300">
+            <input type="checkbox" id="chkBorder" checked class="rounded bg-slate-700 border-slate-600 text-blue-600 focus:ring-0">
+            相片極淡外框 (白底照片必備)
+          </label>
+        </div>
+        <div class="text-slate-400 text-[11px]">
+          沖印尺寸：1800 × 1200 像素 (4×6 吋標準)
+        </div>
+      </div>
+
+      <!-- 4x6 排版預覽畫布容器 -->
+      <div class="flex-1 bg-slate-950/60 rounded-xl border border-slate-800 p-4 flex flex-col items-center justify-center min-h-[380px] overflow-auto">
+        <div class="relative shadow-2xl border border-slate-700 bg-white rounded overflow-hidden max-w-full">
+          <!-- 4x6 相紙渲染畫布 (真實解析度 1800x1200, 透過 CSS 等比縮放適應視窗) -->
+          <canvas id="printCanvas" width="1800" height="1200" class="block max-w-full h-auto" style="max-height: 480px;"></canvas>
+        </div>
+      </div>
+
+      <!-- 超商沖印教學提示框 -->
+      <div class="bg-blue-950/40 border border-blue-800/50 rounded-xl p-3 text-xs text-blue-200/90 leading-relaxed">
+        <div class="font-bold flex items-center gap-1.5 text-blue-300 mb-1">
+          <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          超商立可得 / 7-11 ibon 沖印重要提醒：
+        </div>
+        <ul class="list-disc list-inside space-y-0.5 text-[11px] text-blue-200/70">
+          <li>請選擇<b>「4x6 吋相片沖印」</b>（一般生活照規格，千萬不要選成證件照方案，價格差 10 倍！）。</li>
+          <li>機台排版請務必選擇<b>「符合照片 / 滿版列印」</b>，關閉自動裁切，以確保 1:1 真實物理尺寸列印。</li>
+          <li>印出後，只要沿著排版產生的細灰裁切線用尺和美工刀裁切即可！</li>
+        </ul>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- 核心邏輯 JavaScript -->
+  <script>
+    // --- 規格定義 (單位: mm 與 300 DPI 換算) ---
+    const DPI = 300;
+    const MM_TO_INCH = 25.4;
+    const MM_TO_PX = DPI / MM_TO_INCH; // 約 11.811 px / mm
+
+    const SPECS = {
+      passport: {
+        name: '2 吋 護照/身分證',
+        widthMm: 35,
+        heightMm: 45,
+        widthPx: 413,
+        heightPx: 531,
+        ratio: 35 / 45,
+        headBandTopPercent: 8,
+        headBandHeightPercent: 12,
+        chinPercent: 88,
+        faceOval: { left: 16, right: 16, top: 12, bottom: 12 },
+        description: '3.5 × 4.5 cm (頭部需佔 3.2~3.6cm)'
+      },
+      two_inch_half: {
+        name: '2 吋 半身/健保卡',
+        widthMm: 35,
+        heightMm: 45,
+        widthPx: 413,
+        heightPx: 531,
+        ratio: 35 / 45,
+        headBandTopPercent: 12,
+        headBandHeightPercent: 15,
+        chinPercent: 78,
+        faceOval: { left: 22, right: 22, top: 16, bottom: 22 },
+        description: '3.5 × 4.5 cm (頭頂約 2.5~3.0cm)'
+      },
+      one_inch: {
+        name: '1 吋 駕照/證照',
+        widthMm: 28,
+        heightMm: 35,
+        widthPx: 331,
+        heightPx: 413,
+        ratio: 28 / 35,
+        headBandTopPercent: 8,
+        headBandHeightPercent: 14,
+        chinPercent: 85,
+        faceOval: { left: 18, right: 18, top: 12, bottom: 15 },
+        description: '2.8 × 3.5 cm'
+      }
+    };
+
+    // --- 全域狀態 ---
+    const state = {
+      specKey: 'passport',
+      layoutKey: '2inch_8',
+      image: null,
+      imageLoaded: false,
+      // 影像形變
+      scale: 1,
+      rotateDeg: 0,
+      offsetX: 0,
+      offsetY: 0,
+      // 濾鏡
+      brightness: 0,
+      contrast: 0,
+      // 選項
+      showGuides: true,
+      showCutLine: true,
+      showBorder: true,
+      // 拖曳狀態
+      isDragging: false,
+      dragStartX: 0,
+      dragStartY: 0
+    };
+
+    // --- DOM 元素引用 ---
+    const cropCanvas = document.getElementById('cropCanvas');
+    const cropCtx = cropCanvas.getContext('2d');
+    const printCanvas = document.getElementById('printCanvas');
+    const printCtx = printCanvas.getContext('2d');
+    const cropViewport = document.getElementById('cropViewport');
+    const guideOverlay = document.getElementById('guideOverlay');
+    const headGuideBand = document.getElementById('headGuideBand');
+    const chinGuideLine = document.getElementById('chinGuideLine');
+    const faceOval = document.getElementById('faceOval');
+    const specInfoBadge = document.getElementById('specInfoBadge');
+
+    const sliderZoom = document.getElementById('sliderZoom');
+    const txtZoom = document.getElementById('txtZoom');
+    const sliderRotate = document.getElementById('sliderRotate');
+    const txtRotate = document.getElementById('txtRotate');
+    const sliderBrightness = document.getElementById('sliderBrightness');
+    const txtBrightness = document.getElementById('txtBrightness');
+    const sliderContrast = document.getElementById('sliderContrast');
+    const txtContrast = document.getElementById('txtContrast');
+
+    const chkGuide = document.getElementById('chkGuide');
+    const chkCutLine = document.getElementById('chkCutLine');
+    const chkBorder = document.getElementById('chkBorder');
+    const selectLayout = document.getElementById('selectLayout');
+    const imageUpload = document.getElementById('imageUpload');
+    const btnLoadSample = document.getElementById('btnLoadSample');
+    const btnResetTransform = document.getElementById('btnResetTransform');
+    const btnDownloadSingle = document.getElementById('btnDownloadSingle');
+    const btnDownloadPrint = document.getElementById('btnDownloadPrint');
+
+    // --- 建立預設精美展示照片 (SVG Canvas 人物頭像) ---
+    function createDefaultSamplePhoto() {
+      const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">
+        <defs>
+          <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#ffffff"/>
+          </linearGradient>
+          <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fed7aa"/>
+            <stop offset="100%" stop-color="#fcd34d"/>
+          </linearGradient>
+          <linearGradient id="suit" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1e293b"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+          </linearGradient>
+        </defs>
+        <!-- 背景純白 (證件照規範) -->
+        <rect width="600" height="800" fill="url(#bg)"/>
+
+        <!-- 身體/深色正裝西裝 -->
+        <path d="M 120 800 C 120 620, 210 560, 300 560 C 390 560, 480 620, 480 800 Z" fill="url(#suit)"/>
+        <!-- 白襯衫領口 -->
+        <polygon points="260,560 340,560 300,660" fill="#ffffff"/>
+        <!-- 領帶 -->
+        <polygon points="290,620 310,620 315,770 300,790 285,770" fill="#dc2626"/>
+
+        <!-- 脖子 -->
+        <rect x="260" y="470" width="80" height="110" rx="20" fill="#fde68a"/>
+
+        <!-- 臉部頭形 (標準比例) -->
+        <ellipse cx="300" cy="350" rx="145" ry="180" fill="url(#skin)"/>
+
+        <!-- 俐落深色頭髮 -->
+        <path d="M 155 350 C 145 220, 200 150, 300 145 C 400 150, 455 220, 445 350 C 430 250, 390 190, 300 190 C 210 190, 170 250, 155 350 Z" fill="#18181b"/>
+        <path d="M 150 290 Q 300 130 450 270 Q 380 200 300 210 Q 220 200 150 290 Z" fill="#18181b"/>
+
+        <!-- 眉毛 -->
+        <path d="M 210 305 Q 245 295 275 305" stroke="#27272a" stroke-width="6" stroke-linecap="round" fill="none"/>
+        <path d="M 325 305 Q 355 295 390 305" stroke="#27272a" stroke-width="6" stroke-linecap="round" fill="none"/>
+
+        <!-- 眼睛 (平視鏡頭，露雙耳與眉毛) -->
+        <ellipse cx="245" cy="340" rx="18" ry="12" fill="#ffffff"/>
+        <circle cx="245" cy="340" r="9" fill="#1e293b"/>
+        <circle cx="242" cy="337" r="3" fill="#ffffff"/>
+
+        <ellipse cx="355" cy="340" rx="18" ry="12" fill="#ffffff"/>
+        <circle cx="355" cy="340" r="9" fill="#1e293b"/>
+        <circle cx="352" cy="337" r="3" fill="#ffffff"/>
+
+        <!-- 鼻子 -->
+        <path d="M 296 345 L 292 410 Q 300 420 308 410" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+        <!-- 嘴巴 (自然微笑不露齒，符合護照規定) -->
+        <path d="M 270 460 Q 300 472 330 460" stroke="#b45309" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+        <!-- 耳朵 (護照需清楚露出) -->
+        <ellipse cx="152" cy="355" rx="16" ry="32" fill="#fde68a"/>
+        <ellipse cx="448" cy="355" rx="16" ry="32" fill="#fde68a"/>
+      </svg>
+      `;
+      const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      loadImageFromSrc(url);
+    }
+
+    function loadImageFromSrc(src) {
+      const img = new Image();
+      img.onload = () => {
+        state.image = img;
+        state.imageLoaded = true;
+        resetTransform();
+        renderAll();
+      };
+      img.src = src;
+    }
+
+    // --- 調整與變形重置 ---
+    function resetTransform() {
+      if (!state.image) return;
+      const spec = SPECS[state.specKey];
+      // 根據裁切比例自動適配滿版
+      const imgRatio = state.image.width / state.image.height;
+      const targetRatio = spec.ratio;
+
+      let baseScale = 1;
+      if (imgRatio > targetRatio) {
+        baseScale = cropCanvas.height / state.image.height;
+      } else {
+        baseScale = cropCanvas.width / state.image.width;
+      }
+
+      state.scale = baseScale * 1.05;
+      state.rotateDeg = 0;
+      state.offsetX = cropCanvas.width / 2;
+      state.offsetY = cropCanvas.height / 2;
+      state.brightness = 0;
+      state.contrast = 0;
+
+      // 更新介面控制項
+      sliderZoom.value = 1;
+      txtZoom.innerText = '100%';
+      sliderRotate.value = 0;
+      txtRotate.innerText = '0.0°';
+      sliderBrightness.value = 0;
+      txtBrightness.innerText = '0';
+      sliderContrast.value = 0;
+      txtContrast.innerText = '0';
+    }
+
+    // --- 更新裁切視窗比例與輔助線規格 ---
+    function updateSpecUI() {
+      const spec = SPECS[state.specKey];
+      specInfoBadge.innerText = spec.description;
+
+      // 調整裁切 Canvas 的原生像素大小 (依據標準 300DPI)
+      cropCanvas.width = spec.widthPx;
+      cropCanvas.height = spec.heightPx;
+
+      // 調整裁切預覽視窗在畫面的顯示長寬
+      const displayHeight = 360;
+      const displayWidth = Math.round(displayHeight * spec.ratio);
+      cropViewport.style.width = `${displayWidth}px`;
+      cropViewport.style.height = `${displayHeight}px`;
+
+      // 調整輔助線位置
+      headGuideBand.style.top = `${spec.headBandTopPercent}%`;
+      headGuideBand.style.height = `${spec.headBandHeightPercent}%`;
+      chinGuideLine.style.bottom = `${100 - spec.chinPercent}%`;
+
+      faceOval.style.left = `${spec.faceOval.left}%`;
+      faceOval.style.right = `${spec.faceOval.right}%`;
+      faceOval.style.top = `${spec.faceOval.top}%`;
+      faceOval.style.bottom = `${spec.faceOval.bottom}%`;
+
+      resetTransform();
+      renderAll();
+    }
+
+    // --- 渲染單張裁切畫布 ---
+    function renderCropCanvas() {
+      const cw = cropCanvas.width;
+      const ch = cropCanvas.height;
+
+      cropCtx.clearRect(0, 0, cw, ch);
+      cropCtx.fillStyle = '#ffffff';
+      cropCtx.fillRect(0, 0, cw, ch);
+
+      if (!state.imageLoaded || !state.image) return;
+
+      cropCtx.save();
+
+      // 套用亮度與對比濾鏡
+      let filterStr = '';
+      if (state.brightness !== 0) filterStr += `brightness(${1 + state.brightness / 100}) `;
+      if (state.contrast !== 0) filterStr += `contrast(${1 + state.contrast / 100}) `;
+      if (filterStr) cropCtx.filter = filterStr.trim();
+
+      // 移動到中心點進行旋轉與縮放
+      cropCtx.translate(state.offsetX, state.offsetY);
+      cropCtx.rotate((state.rotateDeg * Math.PI) / 180);
+      cropCtx.scale(state.scale, state.scale);
+
+      // 繪製圖片 (原點置中)
+      cropCtx.drawImage(
+        state.image,
+        -state.image.width / 2,
+        -state.image.height / 2
+      );
+
+      cropCtx.restore();
+    }
+
+    // --- 渲染 4x6 印刷相紙 (1800 x 1200, 300 DPI) ---
+    function renderPrintCanvas() {
+      const pw = printCanvas.width;   // 1800
+      const ph = printCanvas.height;  // 1200
+
+      // 清空為純白相紙底色
+      printCtx.fillStyle = '#ffffff';
+      printCtx.fillRect(0, 0, pw, ph);
+
+      if (!state.imageLoaded) return;
+
+      const layout = selectLayout.value;
+
+      if (layout === '2inch_8') {
+        // 2吋 8張 (4 欄 x 2 列)
+        const itemW = 413;
+        const itemH = 531;
+        const cols = 4;
+        const rows = 2;
+
+        const gapX = 24;
+        const gapY = 32;
+
+        const startX = Math.round((pw - (cols * itemW + (cols - 1) * gapX)) / 2);
+        const startY = Math.round((ph - (rows * itemH + (rows - 1) * gapY)) / 2);
+
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const x = startX + c * (itemW + gapX);
+            const y = startY + r * (itemH + gapY);
+            drawPhotoItem(x, y, itemW, itemH);
+          }
+        }
+
+      } else if (layout === '1inch_10') {
+        // 1吋 10張 (5 欄 x 2 列)
+        const itemW = 331;
+        const itemH = 413;
+        const cols = 5;
+        const rows = 2;
+
+        const gapX = 18;
+        const gapY = 80;
+
+        const startX = Math.round((pw - (cols * itemW + (cols - 1) * gapX)) / 2);
+        const startY = Math.round((ph - (rows * itemH + (rows - 1) * gapY)) / 2);
+
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const x = startX + c * (itemW + gapX);
+            const y = startY + r * (itemH + gapY);
+            drawPhotoItem(x, y, itemW, itemH);
+          }
+        }
+
+      } else if (layout === 'combo_2_1') {
+        // 混搭版 (上方 4張 2吋 + 下方 4張 1吋)
+        const w2 = 413;
+        const h2 = 531;
+        const gapX2 = 24;
+        const startX2 = Math.round((pw - (4 * w2 + 3 * gapX2)) / 2);
+        const startY2 = 60;
+
+        for (let c = 0; c < 4; c++) {
+          const x = startX2 + c * (w2 + gapX2);
+          drawPhotoItem(x, startY2, w2, h2);
+        }
+
+        const w1 = 331;
+        const h1 = 413;
+        const gapX1 = 30;
+        const startX1 = Math.round((pw - (4 * w1 + 3 * gapX1)) / 2);
+        const startY1 = startY2 + h2 + 65;
+
+        for (let c = 0; c < 4; c++) {
+          const x = startX1 + c * (w1 + gapX1);
+          drawPhotoItem(x, startY1, w1, h1);
+        }
+      }
+
+      // 繪製相紙四周資訊註記
+      printCtx.save();
+      printCtx.fillStyle = '#94a3b8';
+      printCtx.font = '16px sans-serif';
+      printCtx.textAlign = 'right';
+      printCtx.fillText('IDoPhoto • 4×6 吋 (10.16×15.24cm) 300 DPI • 建議立可得/ibon選「符合相紙不留白」', pw - 40, ph - 20);
+      printCtx.restore();
+    }
+
+    // --- 在指定相紙座標繪製單張照片及裁切引導線 ---
+    function drawPhotoItem(x, y, w, h) {
+      // 1. 繪製單張照片
+      printCtx.drawImage(cropCanvas, x, y, w, h);
+
+      // 2. 繪製極淡照片外框 (防止純白底色融於相紙無法辨識切線)
+      if (state.showBorder) {
+        printCtx.save();
+        printCtx.strokeStyle = '#d4d4d8';
+        printCtx.lineWidth = 1;
+        printCtx.strokeRect(x, y, w, h);
+        printCtx.restore();
+      }
+
+      // 3. 繪製四角十字裁切導引線 (Corner Crop Marks)
+      if (state.showCutLine) {
+        printCtx.save();
+        printCtx.strokeStyle = '#a1a1aa';
+        printCtx.lineWidth = 1.2;
+        const markLen = 14;
+        const offset = 4;
+
+        // 左上角
+        printCtx.beginPath();
+        printCtx.moveTo(x - offset - markLen, y);
+        printCtx.lineTo(x - offset, y);
+        printCtx.moveTo(x, y - offset - markLen);
+        printCtx.lineTo(x, y - offset);
+
+        // 右上角
+        printCtx.moveTo(x + w + offset, y);
+        printCtx.lineTo(x + w + offset + markLen, y);
+        printCtx.moveTo(x + w, y - offset - markLen);
+        printCtx.lineTo(x + w, y - offset);
+
+        // 左下角
+        printCtx.moveTo(x - offset - markLen, y + h);
+        printCtx.lineTo(x - offset, y + h);
+        printCtx.moveTo(x, y + h + offset);
+        printCtx.lineTo(x, y + h + offset + markLen);
+
+        // 右下角
+        printCtx.moveTo(x + w + offset, y + h);
+        printCtx.lineTo(x + w + offset + markLen, y + h);
+        printCtx.moveTo(x + w, y + h + offset);
+        printCtx.lineTo(x + w, y + h + offset + markLen);
+
+        printCtx.stroke();
+        printCtx.restore();
+      }
+    }
+
+    // --- 集中重繪 ---
+    function renderAll() {
+      renderCropCanvas();
+      renderPrintCanvas();
+    }
+
+    // --- 互動拖曳與縮放事件處理 (Drag & Wheel) ---
+    cropViewport.addEventListener('mousedown', (e) => {
+      state.isDragging = true;
+      state.dragStartX = e.clientX;
+      state.dragStartY = e.clientY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!state.isDragging || !state.imageLoaded) return;
+      const dx = e.clientX - state.dragStartX;
+      const dy = e.clientY - state.dragStartY;
+      state.dragStartX = e.clientX;
+      state.dragStartY = e.clientY;
+
+      const viewRect = cropViewport.getBoundingClientRect();
+      const scaleFactor = cropCanvas.width / viewRect.width;
+
+      state.offsetX += dx * scaleFactor;
+      state.offsetY += dy * scaleFactor;
+      renderAll();
+    });
+
+    window.addEventListener('mouseup', () => {
+      state.isDragging = false;
+    });
+
+    // 滾輪縮放
+    cropViewport.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      if (!state.imageLoaded) return;
+      const delta = e.deltaY < 0 ? 0.05 : -0.05;
+      let newZoom = parseFloat(sliderZoom.value) + delta;
+      newZoom = Math.min(Math.max(newZoom, 0.3), 3);
+      sliderZoom.value = newZoom;
+      onZoomChanged();
+    }, { passive: false });
+
+    function onZoomChanged() {
+      const zoomRatio = parseFloat(sliderZoom.value);
+      txtZoom.innerText = `${Math.round(zoomRatio * 100)}%`;
+      
+      const spec = SPECS[state.specKey];
+      const imgRatio = state.image.width / state.image.height;
+      const targetRatio = spec.ratio;
+      let baseScale = (imgRatio > targetRatio) 
+        ? cropCanvas.height / state.image.height 
+        : cropCanvas.width / state.image.width;
+
+      state.scale = baseScale * zoomRatio * 1.05;
+      renderAll();
+    }
+
+    sliderZoom.addEventListener('input', onZoomChanged);
+
+    sliderRotate.addEventListener('input', (e) => {
+      state.rotateDeg = parseFloat(e.target.value);
+      txtRotate.innerText = `${state.rotateDeg > 0 ? '+' : ''}${state.rotateDeg.toFixed(1)}°`;
+      renderAll();
+    });
+
+    sliderBrightness.addEventListener('input', (e) => {
+      state.brightness = parseInt(e.target.value);
+      txtBrightness.innerText = state.brightness;
+      renderAll();
+    });
+
+    sliderContrast.addEventListener('input', (e) => {
+      state.contrast = parseInt(e.target.value);
+      txtContrast.innerText = state.contrast;
+      renderAll();
+    });
+
+    // --- 規格切換按鈕 ---
+    document.querySelectorAll('.spec-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.spec-btn').forEach(b => {
+          b.classList.remove('active', 'border-blue-500', 'bg-blue-500/10', 'text-white');
+          b.classList.add('border-slate-700', 'bg-slate-800/60', 'text-slate-300');
+        });
+        btn.classList.add('active', 'border-blue-500', 'bg-blue-500/10', 'text-white');
+        btn.classList.remove('border-slate-700', 'bg-slate-800/60', 'text-slate-300');
+
+        state.specKey = btn.dataset.spec;
+        updateSpecUI();
+      });
+    });
+
+    // --- 輔助線與開關控制 ---
+    chkGuide.addEventListener('change', (e) => {
+      state.showGuides = e.target.checked;
+      guideOverlay.style.opacity = state.showGuides ? '1' : '0';
+    });
+
+    chkCutLine.addEventListener('change', (e) => {
+      state.showCutLine = e.target.checked;
+      renderPrintCanvas();
+    });
+
+    chkBorder.addEventListener('change', (e) => {
+      state.showBorder = e.target.checked;
+      renderPrintCanvas();
+    });
+
+    selectLayout.addEventListener('change', () => {
+      renderPrintCanvas();
+    });
+
+    btnResetTransform.addEventListener('click', () => {
+      resetTransform();
+      renderAll();
+    });
+
+    // --- 檔案上傳 ---
+    imageUpload.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          loadImageFromSrc(event.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // 拖曳上傳至視窗
+    cropViewport.addEventListener('dragover', (e) => e.preventDefault());
+    cropViewport.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        const file = e.dataTransfer.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => loadImageFromSrc(event.target.result);
+        reader.readAsDataURL(file);
+      }
+    });
+
+    btnLoadSample.addEventListener('click', () => {
+      createDefaultSamplePhoto();
+    });
+
+    // --- 下載匯出功能 ---
+    btnDownloadSingle.addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = `IDoPhoto_Single_${state.specKey}_${Date.now()}.jpg`;
+      link.href = cropCanvas.toDataURL('image/jpeg', 0.95);
+      link.click();
+    });
+
+    btnDownloadPrint.addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = `IDoPhoto_Print_4x6_${selectLayout.value}_${Date.now()}.jpg`;
+      link.href = printCanvas.toDataURL('image/jpeg', 0.95);
+      link.click();
+    });
+
+    // 初始化
+    window.addEventListener('DOMContentLoaded', () => {
+      updateSpecUI();
+      createDefaultSamplePhoto();
+    });
+  </script>
+</body>
+</html>
