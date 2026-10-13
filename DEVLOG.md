@@ -106,3 +106,7 @@
   * 內建即時下載與推論進度百分比動態指示器。
 * **自動無縫融合白底**：
   * 去背完成後即時輸出透明圖並載入編輯畫布，背底自動填補標準證件純白色（#FFFFFF），直接銜接對齊排版。
+* **核心問題修復 (Bugfix)**：
+  * 修復底層函式型別限制：原先傳入 DOM `HTMLImageElement` 物件導致 `n.shape is undefined` 內部拋錯，改由離屏 Canvas 先轉為標準 `Blob` 資料流後再傳入。
+  * 明確指定 `publicPath` 至支援 CORS 之高速 CDN（unpkg），並指定 `model: 'small'`（40MB 輕量模型），解決國外預設 CDN 連線逾時與記憶體佔用問題。
+
