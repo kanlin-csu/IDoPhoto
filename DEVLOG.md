@@ -172,3 +172,13 @@
   * `llms.txt`：依據新興 LLM 文字標準，提供低 Token 純文字說明與常見問答快速指引。
 * **獨立全寬規格速查與 FAQ 專區（佈局優化防遮擋）**：
   * 將常用證件尺寸速查表、超商省錢攻略與語意化 `<details><summary>` FAQ 移至主編輯區下方之獨立全寬專區，既豐富長尾關鍵字便於 Google 與 AI 引用，又徹底釋放右側 `#panelPrint` 沖印工作台高度，保證 4×6 預覽畫布與 20mm 實體校對標尺 100% 完整無遮擋。
+
+### 14. 關鍵字深化（大頭照、大頭照排版）與作者官網整合 (kanlin.org)
+* **關鍵字全面強化 (Keywords Expansion)**：
+  * 全站強化「大頭照」、「大頭照排版」、「大頭照尺寸」、「超商印大頭照」、「1吋大頭照」、「2吋大頭照」等高頻搜尋長尾詞。
+  * 深度融合於 `<title>`、`<meta name="keywords">`、`<meta name="description">`、OpenGraph、Twitter Card 與 Schema.org JSON-LD。
+  * Header 標籤與副標題升級標註「大頭照 / 證件照排版專用」；頁面下方知識庫與 FAQ 全面聚焦大頭照排版與沖印情境。
+* **作者官網連結無縫整合 (kanlin.org)**：
+  * 頁尾版權列加入 `Developed by kanlin` 點擊直連 `https://kanlin.org`，並新增專屬「作者官網 (kanlin.org)」導覽連結。
+  * Schema.org 結構化資料注入 `author` 與 `creator` 實體，明確歸屬作者官方網站。
+  * 同步更新 `manifest.json`、`llms.txt` 與 `README.md`。

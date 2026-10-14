@@ -1,8 +1,9 @@
-# IDoPhoto - 證件照/大頭照排版產生器
+# IDoPhoto - 免費線上大頭照排版產生器 / 證件照沖印工具
 
 > 線上網址: https://idophoto.kanlin.org
+> 作者官網: https://kanlin.org
 > 專案原始碼: https://github.com/kanlin-csu/IDoPhoto
-> 定位: 台灣 PhotoCap 精神之現代 Web / PWA 替代方案，100% 免費、免安裝、純前端本機運算保護個人隱私。
+> 定位: 台灣 PhotoCap 精神之現代 Web / PWA 大頭照排版工具，100% 免費、免安裝、純前端本機運算保護個人隱私。
 
 ## 核心功能與規格 (Core Capabilities)
 

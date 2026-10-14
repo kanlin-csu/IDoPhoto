@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IDoPhoto - 免費線上證件照/大頭照排版產生器 | 4x6 超商沖印・護照身分證規格</title>
+  <title>IDoPhoto - 免費線上大頭照排版產生器 / 證件照沖印工具 | 4x6 超商沖印・大頭照 1吋 2吋 護照規格</title>
 
   <!-- SEO 基本中繼資料 -->
-  <meta name="description" content="免費免安裝的線上證件照排版工具！一鍵將 1 吋、2 吋護照身分證照片排版為 4x6 規格，直接至 7-11 ibon 或全家沖印只要 6 元。100% 純前端本機運算，不傳伺服器保護隱私。">
-  <meta name="keywords" content="證件照排版,大頭照排版,4x6沖印,護照照片規格,身分證照片,超商印證件照,7-11 ibon,全家立可得,免費證件照,PhotoCap,1吋照片,2吋照片,PWA">
-  <meta name="author" content="IDoPhoto">
+  <meta name="description" content="免費免安裝的線上大頭照排版與證件照產生器！一鍵將 1 吋、2 吋大頭照排版為 4x6 規格，直接至 7-11 ibon 或全家立可得沖印大頭照只要 6 元。100% 純前端本機運算，不傳伺服器保護隱私。">
+  <meta name="keywords" content="大頭照,大頭照排版,大頭照尺寸,大頭照沖印,線上大頭照製作,免費大頭照排版,證件照排版,4x6沖印,超商印大頭照,護照大頭照,身分證大頭照,7-11 ibon 大頭照,全家立可得大頭照,PhotoCap 網頁版,1吋大頭照,2吋大頭照,PWA">
+  <meta name="author" content="kanlin (https://kanlin.org)">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://idophoto.kanlin.org/">
 
   <!-- 社群分享 Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="IDoPhoto - 免費線上證件照/大頭照排版產生器">
-  <meta property="og:description" content="免安裝、純本機隱私保護！一鍵將 1 吋、2 吋證件照排版為 4x6 規格，超商沖印只要 6 元。">
+  <meta property="og:title" content="IDoPhoto - 免費線上大頭照排版產生器 / 證件照沖印工具">
+  <meta property="og:description" content="免安裝、純本機隱私保護！一鍵完成大頭照排版，1 吋、2 吋大頭照排版至 4x6 規格，超商沖印只要 6 元。">
   <meta property="og:url" content="https://idophoto.kanlin.org/">
   <meta property="og:image" content="https://idophoto.kanlin.org/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -25,8 +25,8 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="IDoPhoto - 免費線上證件照/大頭照排版產生器">
-  <meta name="twitter:description" content="免安裝、純本機隱私保護！一鍵將 1 吋、2 吋證件照排版為 4x6 規格，超商沖印只要 6 元。">
+  <meta name="twitter:title" content="IDoPhoto - 免費線上大頭照排版產生器 / 證件照沖印工具">
+  <meta name="twitter:description" content="免安裝、純本機隱私保護！一鍵完成大頭照排版，1 吋、2 吋大頭照排版至 4x6 規格，超商沖印只要 6 元。">
   <meta name="twitter:image" content="https://idophoto.kanlin.org/og-image.png">
 
   <!-- PWA 漸進式網頁應用支援 -->
@@ -47,13 +47,23 @@
       {
         "@type": "WebApplication",
         "@id": "https://idophoto.kanlin.org/#webapp",
-        "name": "IDoPhoto",
-        "alternateName": ["IDoPhoto 證件照排版產生器", "PhotoCap Web", "IDoPhoto 證件照沖印工具"],
+        "name": "IDoPhoto 大頭照排版產生器",
+        "alternateName": ["大頭照排版工具", "線上大頭照產生器", "IDoPhoto 證件照排版產生器", "PhotoCap Web", "超商大頭照沖印"],
         "url": "https://idophoto.kanlin.org/",
-        "description": "免費免安裝的線上證件照/大頭照排版工具。100% 純瀏覽器本機運算保護個人隱私，內嵌 300 DPI 規格與 PhotoCap 經典外交部護照輔助線，支援 4x6 超商沖印排版。",
+        "description": "免費免安裝的線上大頭照排版與證件照產生器。100% 純瀏覽器本機運算保護個人隱私，內嵌 300 DPI 規格與 PhotoCap 經典外交部護照輔助線，支援 4x6 超商沖印排版。",
         "applicationCategory": "MultimediaApplication",
         "operatingSystem": "All",
         "inLanguage": "zh-TW",
+        "author": {
+          "@type": "Person",
+          "name": "kanlin",
+          "url": "https://kanlin.org"
+        },
+        "creator": {
+          "@type": "Person",
+          "name": "kanlin",
+          "url": "https://kanlin.org"
+        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -61,9 +71,9 @@
         },
         "featureList": [
           "100% 純前端本機運算，不傳送任何照片至伺服器，嚴格保護個人生物隱私",
-          "內嵌 300 DPI 實體規格，支援 4x6 超商相片沖印排版（單張 6 元）",
+          "快速大頭照排版，內嵌 300 DPI 實體規格，支援 4x6 超商相片沖印排版（單張 6 元）",
           "外交部護照 3.2cm - 3.6cm 頭部規範比例輔助線",
-          "支援 2 吋護照身分證、1 吋駕照、經典混搭、5x5 美簽等多種規格",
+          "支援 2 吋護照身分證大頭照、1 吋駕照、經典混搭、5x5 美簽等多種規格",
           "支援 PWA 離線安裝，飛航模式亦可順暢使用"
         ]
       },
@@ -203,9 +213,9 @@
         <h1 class="text-lg font-bold flex items-center gap-2 text-white">
           IDoPhoto
           <span class="text-xs px-2 py-0.5 rounded-full bg-blue-500/25 text-blue-300 font-bold border border-blue-400/40 shadow-sm">v1.0</span>
-          <span class="hidden sm:inline-block text-xs px-2 py-0.5 rounded-full bg-slate-700/80 text-slate-300 font-normal">證件照排版專用版</span>
+          <span class="hidden sm:inline-block text-xs px-2 py-0.5 rounded-full bg-slate-700/80 text-slate-300 font-normal">大頭照 / 證件照排版專用</span>
         </h1>
-        <p class="text-xs text-slate-400">標準規範對齊輔助線 • 4x6 超商沖印排版 • 300 DPI 高畫質純前端輸出</p>
+        <p class="text-xs text-slate-400">標準規範對齊輔助線 • 大頭照排版 • 4x6 超商沖印 6 元搞定 • 300 DPI 實體規格輸出</p>
       </div>
     </div>
 
@@ -501,10 +511,10 @@
         <div>
           <h2 class="text-xl font-bold text-white flex items-center gap-2">
             <span>📚</span>
-            <span>證件照排版規格指南與常見問答</span>
+            <span>大頭照與證件照排版規格指南・常見問答</span>
           </h2>
           <p class="text-xs text-slate-400 mt-1">
-            PhotoCap Web 版線上相館・台灣標準證件規範速查・4×6 超商沖印 6 元省錢攻略
+            PhotoCap Web 版線上相館・大頭照排版與標準證件規範速查・4×6 超商沖印大頭照 6 元省錢攻略
           </p>
         </div>
         <a href="#top" class="text-xs bg-slate-800 hover:bg-slate-700 text-blue-400 px-3 py-1.5 rounded-lg border border-slate-700 self-start sm:self-auto flex items-center gap-1 transition">
@@ -516,17 +526,17 @@
       <!-- 兩欄卡片：左欄規格速查表，右欄超商沖印攻略 -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
-        <!-- 卡片 1: 常用證件照規格速查 -->
+        <!-- 卡片 1: 常用大頭照與證件照規格速查 -->
         <div class="bg-slate-850 rounded-xl p-5 border border-slate-800 space-y-3">
           <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
             <span>📋</span>
-            <span>台灣常見證件照規格尺寸指南</span>
+            <span>台灣常見大頭照與證件照規格尺寸指南</span>
           </h3>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs border-collapse">
               <thead>
                 <tr class="border-b border-slate-750 text-slate-400">
-                  <th class="py-1.5 px-2">證件類型</th>
+                  <th class="py-1.5 px-2">大頭照類型</th>
                   <th class="py-1.5 px-2">實體尺寸</th>
                   <th class="py-1.5 px-2">300 DPI</th>
                   <th class="py-1.5 px-2">關鍵規範</th>
@@ -534,25 +544,25 @@
               </thead>
               <tbody class="divide-y divide-slate-800 text-slate-300">
                 <tr>
-                  <td class="py-1.5 px-2 font-medium text-blue-300">2 吋 護照/身分證</td>
+                  <td class="py-1.5 px-2 font-medium text-blue-300">2 吋 護照/身分證大頭照</td>
                   <td class="py-1.5 px-2">35 × 45 mm</td>
                   <td class="py-1.5 px-2">413 × 531 px</td>
                   <td class="py-1.5 px-2 text-amber-300">頭頂至下巴 3.2~3.6cm</td>
                 </tr>
                 <tr>
-                  <td class="py-1.5 px-2 font-medium text-blue-300">2 吋 健保卡/半身</td>
+                  <td class="py-1.5 px-2 font-medium text-blue-300">2 吋 健保卡/半身大頭照</td>
                   <td class="py-1.5 px-2">35 × 45 mm</td>
                   <td class="py-1.5 px-2">413 × 531 px</td>
                   <td class="py-1.5 px-2">頭頂約 2.5~3.0cm</td>
                 </tr>
                 <tr>
-                  <td class="py-1.5 px-2 font-medium text-blue-300">1 吋 駕照/證照</td>
+                  <td class="py-1.5 px-2 font-medium text-blue-300">1 吋 駕照/證照大頭照</td>
                   <td class="py-1.5 px-2">28 × 35 mm</td>
                   <td class="py-1.5 px-2">331 × 413 px</td>
                   <td class="py-1.5 px-2">五官清晰露耳露眉</td>
                 </tr>
                 <tr>
-                  <td class="py-1.5 px-2 font-medium text-blue-300">美簽/印簽 (2×2吋)</td>
+                  <td class="py-1.5 px-2 font-medium text-blue-300">美簽/印簽 (2×2吋大頭照)</td>
                   <td class="py-1.5 px-2">50 × 50 mm</td>
                   <td class="py-1.5 px-2">591 × 591 px</td>
                   <td class="py-1.5 px-2">正方形頭部佔 50~69%</td>
@@ -565,20 +575,20 @@
           </p>
         </div>
 
-        <!-- 卡片 2: 超商 6 元省錢攻略 -->
+        <!-- 卡片 2: 大頭照排版超商 6 元省錢攻略 -->
         <div class="bg-slate-850 rounded-xl p-5 border border-slate-800 space-y-3 flex flex-col justify-between">
           <div>
             <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
               <span>💡</span>
-              <span>4×6 超商沖印 6 元省錢攻略 (7-11 ibon & 全家立可得)</span>
+              <span>大頭照排版 4×6 超商沖印 6 元省錢攻略 (7-11 ibon & 全家立可得)</span>
             </h3>
             <div class="text-xs text-slate-300 leading-relaxed space-y-2 mt-2">
-              <p>傳統照相館一組證件照動輒 150～350 元。使用 <b>IDoPhoto</b> 排版完成後：</p>
+              <p>傳統照相館一組大頭照動輒 150～350 元。使用 <b>IDoPhoto</b> 免費完成大頭照排版後：</p>
               <ol class="list-decimal list-inside space-y-1 text-slate-300 text-[11px]">
-                <li>點擊「下載 4×6 列印檔」取得內嵌 300 DPI 實體規格的高解析度圖檔。</li>
+                <li>點擊「下載 4×6 列印檔」取得內嵌 300 DPI 實體規格的高解析度大頭照排版圖檔。</li>
                 <li>傳至手機或隨身碟，前往 7-11 ibon 或全家立可得機台。</li>
                 <li>在機台畫面選擇<b>「4×6 吋相片沖印」</b>（生活照方案，單張僅 <b>6～10 元</b>）。</li>
-                <li>列印選項務必勾選<b>「符合照片 / 滿版列印」</b>（關閉自動裁切），印出後沿著十字線剪下即可得到 8~10 張標準證件照！</li>
+                <li>列印選項務必勾選<b>「符合照片 / 滿版列印」</b>（關閉自動裁切），印出後沿著十字線剪下即可得到 8~10 張標準大頭照！</li>
               </ol>
             </div>
           </div>
@@ -593,57 +603,57 @@
       <div class="space-y-3">
         <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
           <span>❓</span>
-          <span>常見問題解答 (FAQ)</span>
+          <span>大頭照與證件照常見問題解答 (FAQ)</span>
         </h3>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <details class="bg-slate-850 rounded-xl p-3.5 border border-slate-800 group">
             <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
-              <span>到 7-11 或全家印證件照，機台要選什麼選項？</span>
+              <span>到 7-11 或全家印大頭照，機台要選什麼選項？</span>
               <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <p class="mt-2 text-xs text-slate-300 leading-relaxed pl-2 border-l-2 border-blue-500">
-              請務必在機台選擇<b>「4×6 吋相片沖印」</b>（生活照相紙列印），切勿點選證件照專案；設定時請確認<b>滿版/不裁切</b>，印出後沿十字裁切線剪下即可。
+              請務必在機台選擇<b>「4×6 吋相片沖印」</b>（生活照相紙列印），切勿點選證件照專案；設定時請確認<b>滿版/不裁切</b>，印出後沿十字裁切線剪下即可獲得多張標準大頭照。
             </p>
           </details>
 
           <details class="bg-slate-850 rounded-xl p-3.5 border border-slate-800 group">
             <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
-              <span>為什麼護照照片對頭頂比例這麼嚴格？</span>
+              <span>為什麼護照大頭照對頭頂比例這麼嚴格？</span>
               <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <p class="mt-2 text-xs text-slate-300 leading-relaxed pl-2 border-l-2 border-blue-500">
-              依外交部領事事務局規定，護照與身分證頭頂至下巴必須介於 3.2cm 至 3.6cm 之間。IDoPhoto 特製了綠色半透明頭頂輔助帶，只要將照片頭頂調至框內，下巴平視對齊，即可保證審核通過不被退件。
+              依外交部領事事務局規定，護照與身分證大頭照頭頂至下巴必須介於 3.2cm 至 3.6cm 之間。IDoPhoto 特製了綠色半透明頭頂輔助帶，只要將照片頭頂調至框內，下巴平視對齊，即可保證大頭照審核通過不被退件。
             </p>
           </details>
 
           <details class="bg-slate-850 rounded-xl p-3.5 border border-slate-800 group">
             <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
-              <span>我的照片會被上傳到後台伺服器嗎？</span>
+              <span>線上大頭照排版，我的照片會被上傳到後台伺服器嗎？</span>
               <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <p class="mt-2 text-xs text-slate-300 leading-relaxed pl-2 border-l-2 border-blue-500">
-              絕不上傳！IDoPhoto 為 100% 純前端靜態工具，所有裁切與高解析度運算均在您本機的瀏覽器記憶體中完成，關閉網頁即自動銷毀，絕無生物隱私外洩風險。
+              絕不上傳！IDoPhoto 為 100% 純前端靜態工具，所有大頭照裁切與高解析度運算均在您本機的瀏覽器記憶體中完成，關閉網頁即自動銷毀，絕無生物隱私外洩風險。
             </p>
           </details>
 
           <details class="bg-slate-850 rounded-xl p-3.5 border border-slate-800 group">
             <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
-              <span>需要手機 App 嗎？如何安裝到手機桌面？</span>
+              <span>手機可以直接進行大頭照排版並安裝為 App 嗎？</span>
               <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <p class="mt-2 text-xs text-slate-300 leading-relaxed pl-2 border-l-2 border-blue-500">
-              IDoPhoto 支援 PWA 規範。Android 手機可點擊網頁頂部「安裝 App」按鈕；iPhone Safari 可點擊底部分享圖示選擇「加入主畫面」。安裝後免連網或飛航模式亦可順暢使用。
+              IDoPhoto 支援 PWA 規範。Android 手機可點擊網頁頂部「安裝 App」按鈕；iPhone Safari 可點擊底部分享圖示選擇「加入主畫面」。安裝後免連網或飛航模式亦可順暢排版大頭照。
             </p>
           </details>
 
           <details class="bg-slate-850 rounded-xl p-3.5 border border-slate-800 group md:col-span-2">
             <summary class="font-medium text-slate-200 cursor-pointer flex items-center justify-between text-xs select-none">
-              <span>照片背景不是白色的話怎麼去背？</span>
+              <span>大頭照背景不是白色的話怎麼去背？</span>
               <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <p class="mt-2 text-xs text-slate-300 leading-relaxed pl-2 border-l-2 border-blue-500">
-              可利用 iPhone / Pixel / 三星手機相簿的「長按 1 秒去背」，或使用 Canva 免費線上照片去背。產生的透明圖檔上傳後，IDoPhoto 會自動套用標準證件純白底（#FFFFFF）。
+              可利用 iPhone / Pixel / 三星手機相簿的「長按 1 秒去背」，或使用 Canva 免費線上照片去背。產生的透明圖檔上傳後，IDoPhoto 會自動為您的大頭照套用標準證件純白底（#FFFFFF）。
             </p>
           </details>
         </div>
@@ -665,11 +675,16 @@
       <a href="#seoKnowledgeSection" class="hover:text-blue-400 underline transition text-slate-300">規格指南與 FAQ</a>
     </div>
     <div class="flex items-center gap-3">
-      <span>Developed by <a href="https://github.com/kanlin-csu" target="_blank" class="text-slate-300 hover:text-white transition font-medium">kanlin</a></span>
+      <span>Developed by <a href="https://kanlin.org" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-white transition font-medium underline">kanlin</a></span>
       <span>•</span>
-      <a href="https://github.com/kanlin-csu/IDoPhoto" target="_blank" class="text-slate-300 hover:text-white flex items-center gap-1 transition">
+      <a href="https://kanlin.org" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-white flex items-center gap-1 transition">
+        <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+        <span>作者官網</span>
+      </a>
+      <span>•</span>
+      <a href="https://github.com/kanlin-csu/IDoPhoto" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-white flex items-center gap-1 transition">
         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-        GitHub 專案
+        <span>GitHub</span>
       </a>
     </div>
   </footer>

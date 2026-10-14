@@ -1,7 +1,7 @@
 {
-  "name": "IDoPhoto 證件照排版產生器",
+  "name": "IDoPhoto 大頭照/證件照排版產生器",
   "short_name": "IDoPhoto",
-  "description": "專業證件照/大頭照排版產生器，超商 4x6 吋沖印，純前端免安裝、100% 隱私保護",
+  "description": "專業大頭照排版與證件照沖印工具，超商 4x6 吋沖印 6 元搞定，純前端免安裝、100% 隱私保護",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

@@ -1,8 +1,9 @@
 # IDoPhoto 📸
 
-> **專業證件照/大頭照排版產生器 (純前端、零依賴、保護隱私、離線可用)**
+> **專業線上大頭照排版產生器 / 證件照沖印工具 (純前端、零依賴、保護隱私、離線可用)**
 
-🌐 **線上立即使用**：[https://idophoto.kanlin.org](https://idophoto.kanlin.org)
+🌐 **線上立即使用**：[https://idophoto.kanlin.org](https://idophoto.kanlin.org)  
+👤 **作者官網**：[https://kanlin.org](https://kanlin.org)
 
 ---
 
